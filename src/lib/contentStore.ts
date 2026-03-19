@@ -1,9 +1,4 @@
-import { readFileSync, writeFileSync, existsSync, readdirSync } from "fs";
-import { join } from "path";
-
-const DATA_DIR = join(process.cwd(), "data");
-const CONTENT_FILE = join(DATA_DIR, "content.json");
-const UPLOADS_DIR = join(process.cwd(), "public", "uploads");
+import { dbGet, dbSet } from "./db";
 
 export interface PageSection {
   id: string;
@@ -44,7 +39,7 @@ const defaultContent: SiteContent = {
         title: "Where Countryside",
         titleLine2: "Meets Comfort",
         paragraph1: "Set in the heart of the Kentish Weald, Alban's Barnyard is a small working farm raising pedigree Jacob sheep and North Devon Red Ruby cattle among rolling orchards and ancient woodland.",
-        paragraph2: "Cox Cottage has been lovingly designed with sustainability at its heart — powered by ground source heat pump, solar panels, and heat recovery ventilation — without compromising on luxury. Dijon limestone floors, a hand-built kitchen, and a wood burning stove create the perfect retreat.",
+        paragraph2: "Cox Cottage has been lovingly designed with sustainability at its heart — powered by ground source heat pump, solar panels, and heat recovery ventilation — without compromising on luxury.",
         paragraph3: "Whether you're watching lambs in spring, tasting our own honey in summer, or curling up by the fire in winter, every season brings something special.",
         mainImage: "/images/farm/sunset-tractor.jpg",
         smallImage: "/images/cottage/interior-11.jpg",
@@ -58,6 +53,7 @@ const defaultContent: SiteContent = {
       label: "Seasonal Banner",
       fields: {
         enabled: true,
+        autoSeason: true,
         season: "Spring 2026",
         title: "Lambing Season",
         titleLine2: "is Here",
@@ -77,7 +73,7 @@ const defaultContent: SiteContent = {
         enabled: true,
         showInMenu: true,
         title: "Lambcam",
-        description: "Watch our flock in real-time. During lambing season, you can witness the arrival of new lambs from the comfort of your screen. Our Jacob sheep have been a beloved feature of the farm for generations.",
+        description: "Watch our flock in real-time. During lambing season, you can witness the arrival of new lambs from the comfort of your screen.",
         camera1Alias: "620d2145dc98f",
         camera1Label: "Barn View",
         camera2Alias: "64135a44aacd3",
@@ -91,7 +87,7 @@ const defaultContent: SiteContent = {
       fields: {
         heroImage: "/images/cottage/cottages-05.jpg",
         title: "Cox Cottage",
-        description: "A beautifully restored barn conversion with two spacious ensuite bedrooms, an open-plan kitchen and living area with wood burning stove, and a private garden overlooking the farm. Designed with sustainability and luxury in equal measure.",
+        description: "A beautifully restored barn conversion with two spacious ensuite bedrooms, an open-plan kitchen and living area with wood burning stove, and a private garden overlooking the farm.",
       },
     },
     {
@@ -102,54 +98,33 @@ const defaultContent: SiteContent = {
         phone: "+44 (0)1892 826052",
         email: "mail@albansbarnyard.co.uk",
         address: "Alban's Barnyard\nRomford Road\nPembury, Kent\nTN2 4BB",
-        directions: "We're tucked away down a farm track, so satnav can be unreliable. From Matfield village, take the B2160 south. After passing The Poet restaurant, take the first left into Foxhole Lane, then immediately left again into Romford Road. Follow the track to the farm.",
-        directionsTip: "Tip: Use postcode TN12 7JH for The Poet, then follow our directions from there.",
       },
     },
   ],
 };
 
-export function getContent(): SiteContent {
-  if (!existsSync(CONTENT_FILE)) {
-    writeFileSync(CONTENT_FILE, JSON.stringify(defaultContent, null, 2), "utf-8");
+export async function getContent(): Promise<SiteContent> {
+  const content = await dbGet<SiteContent>("content", defaultContent);
+  if (!content.sections || content.sections.length === 0) {
+    await dbSet("content", defaultContent);
     return defaultContent;
   }
-  try {
-    return JSON.parse(readFileSync(CONTENT_FILE, "utf-8"));
-  } catch {
-    return defaultContent;
-  }
+  return content;
 }
 
-export function getSection(id: string): PageSection | undefined {
-  return getContent().sections.find((s) => s.id === id);
+export async function getSection(id: string): Promise<PageSection | undefined> {
+  const content = await getContent();
+  return content.sections.find((s) => s.id === id);
 }
 
-export function updateSection(
+export async function updateSection(
   id: string,
   fields: Record<string, string | string[] | boolean | number>
-): PageSection | null {
-  const content = getContent();
+): Promise<PageSection | null> {
+  const content = await getContent();
   const section = content.sections.find((s) => s.id === id);
   if (!section) return null;
   section.fields = { ...section.fields, ...fields };
-  writeFileSync(CONTENT_FILE, JSON.stringify(content, null, 2), "utf-8");
+  await dbSet("content", content);
   return section;
-}
-
-export function getUploadedMedia(): { name: string; url: string; size: number }[] {
-  if (!existsSync(UPLOADS_DIR)) return [];
-  return readdirSync(UPLOADS_DIR)
-    .filter((f) => /\.(jpg|jpeg|png|webp|mp4|mov|gif)$/i.test(f))
-    .map((f) => {
-      const stats = existsSync(join(UPLOADS_DIR, f))
-        ? { size: 0 }
-        : { size: 0 };
-      try {
-        const s = readFileSync(join(UPLOADS_DIR, f));
-        return { name: f, url: `/uploads/${f}`, size: s.length };
-      } catch {
-        return { name: f, url: `/uploads/${f}`, size: 0 };
-      }
-    });
 }

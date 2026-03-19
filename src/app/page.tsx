@@ -4,7 +4,7 @@ import { CottagePreview } from "@/components/CottagePreview";
 import { LambcamPreview } from "@/components/LambcamPreview";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
 import { ProductsSection } from "@/components/ProductsSection";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { GuestBookSection } from "@/components/GuestBookSection";
 import { FacebookSection } from "@/components/FacebookSection";
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       <LambcamPreview />
       <SeasonalBanner />
       <ProductsSection />
-      <TestimonialsSection />
+      <GuestBookSection />
       <FacebookSection />
     </>
   );

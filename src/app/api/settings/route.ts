@@ -3,12 +3,12 @@ import { isAuthorized, unauthorizedResponse } from "@/lib/adminAuth";
 import { getSettings, updateSettings } from "@/lib/settingsStore";
 
 export async function GET() {
-  return NextResponse.json(getSettings());
+  return NextResponse.json(await getSettings());
 }
 
 export async function POST(request: NextRequest) {
   if (!isAuthorized(request)) return unauthorizedResponse();
   const updates = await request.json();
-  const settings = updateSettings(updates);
+  const settings = await updateSettings(updates);
   return NextResponse.json(settings);
 }

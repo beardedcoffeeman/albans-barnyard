@@ -1,7 +1,4 @@
-import { readFileSync, writeFileSync, existsSync } from "fs";
-import { join } from "path";
-
-const SETTINGS_FILE = join(process.cwd(), "data", "settings.json");
+import { dbGet, dbSet } from "./db";
 
 export interface SiteSettings {
   lambcamEnabled: boolean;
@@ -9,36 +6,23 @@ export interface SiteSettings {
   seasonalBannerTitle: string;
   seasonalBannerSubtitle: string;
   seasonalBannerSeason: string;
-  seasonalBannerCta1Text: string;
-  seasonalBannerCta1Link: string;
-  seasonalBannerCta2Text: string;
-  seasonalBannerCta2Link: string;
 }
 
 const defaults: SiteSettings = {
   lambcamEnabled: true,
   lambcamMenuVisible: true,
   seasonalBannerTitle: "Lambing Season is Here",
-  seasonalBannerSubtitle: "Watch our Jacob ewes and their lambs live on the Lambcam, or book a spring stay and experience it first-hand.",
+  seasonalBannerSubtitle: "Watch our Jacob ewes and their lambs live on the Lambcam.",
   seasonalBannerSeason: "Spring 2026",
-  seasonalBannerCta1Text: "Watch Live",
-  seasonalBannerCta1Link: "/lambcam",
-  seasonalBannerCta2Text: "Book a Spring Stay",
-  seasonalBannerCta2Link: "/cox-cottage#booking",
 };
 
-export function getSettings(): SiteSettings {
-  if (!existsSync(SETTINGS_FILE)) return defaults;
-  try {
-    return { ...defaults, ...JSON.parse(readFileSync(SETTINGS_FILE, "utf-8")) };
-  } catch {
-    return defaults;
-  }
+export async function getSettings(): Promise<SiteSettings> {
+  return dbGet<SiteSettings>("settings", defaults);
 }
 
-export function updateSettings(updates: Partial<SiteSettings>): SiteSettings {
-  const current = getSettings();
+export async function updateSettings(updates: Partial<SiteSettings>): Promise<SiteSettings> {
+  const current = await getSettings();
   const updated = { ...current, ...updates };
-  writeFileSync(SETTINGS_FILE, JSON.stringify(updated, null, 2), "utf-8");
+  await dbSet("settings", updated);
   return updated;
 }

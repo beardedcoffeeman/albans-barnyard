@@ -133,13 +133,13 @@ const tools: Anthropic.Tool[] = [
   },
 ];
 
-function executeTool(
+async function executeTool(
   name: string,
   input: Record<string, unknown>
-): string {
+): Promise<string> {
   switch (name) {
     case "get_availability": {
-      const dates = getAvailability();
+      const dates = await getAvailability();
       if (dates.length === 0) return "No dates are currently marked as available.";
       const future = dates.filter(
         (d) => d.date >= new Date().toISOString().split("T")[0]
@@ -156,15 +156,15 @@ function executeTool(
         date,
         pricePerNight: (input.pricePerNight as number) || 150,
       }));
-      addAvailableDates(dates);
+      await addAvailableDates(dates);
       return `Added ${dates.length} dates as available at £${dates[0].pricePerNight}/night: ${dates.map((d) => d.date).join(", ")}`;
     }
     case "remove_availability": {
-      removeAvailableDates(input.dates as string[]);
+      await removeAvailableDates(input.dates as string[]);
       return `Removed ${(input.dates as string[]).length} dates from availability.`;
     }
     case "get_bookings": {
-      const all = getBookings();
+      const all = await getBookings();
       const status = (input.status as string) || "all";
       const filtered =
         status === "all" ? all : all.filter((b) => b.status === status);
@@ -178,7 +178,7 @@ function executeTool(
         .join("\n");
     }
     case "update_booking": {
-      const booking = updateBookingStatus(
+      const booking = await updateBookingStatus(
         input.bookingId as string,
         input.status as "approved" | "declined"
       );
@@ -186,11 +186,11 @@ function executeTool(
       return `Booking from ${booking.name} (${booking.checkIn} to ${booking.checkOut}) has been ${booking.status}.`;
     }
     case "get_settings": {
-      const settings = getSettings();
+      const settings = await getSettings();
       return JSON.stringify(settings, null, 2);
     }
     case "update_settings": {
-      const updated = updateSettings(input.settings as Record<string, unknown>);
+      const updated = await updateSettings(input.settings as Record<string, unknown>);
       return `Settings updated:\n${JSON.stringify(updated, null, 2)}`;
     }
     default:
@@ -224,11 +224,13 @@ export async function POST(request: NextRequest) {
         (block): block is Anthropic.ToolUseBlock => block.type === "tool_use"
       );
 
-      const toolResults = toolUseBlocks.map((block) => ({
-        type: "tool_result" as const,
-        tool_use_id: block.id,
-        content: executeTool(block.name, block.input as Record<string, unknown>),
-      }));
+      const toolResults = await Promise.all(
+        toolUseBlocks.map(async (block) => ({
+          type: "tool_result" as const,
+          tool_use_id: block.id,
+          content: await executeTool(block.name, block.input as Record<string, unknown>),
+        }))
+      );
 
       response = await client.messages.create({
         model: "claude-sonnet-4-20250514",
