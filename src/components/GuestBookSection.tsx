@@ -103,40 +103,97 @@ export function GuestBookSection() {
           ))}
         </div>
 
-        {/* Guest Book CTA */}
-        <div className="text-center">
+        {/* Guest Book Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
           <button
             onClick={() => setShowBook(!showBook)}
-            className="inline-flex items-center gap-3 px-8 py-4 border border-stone-300 text-stone-700 font-sans text-sm tracking-[0.15em] uppercase hover:border-green-dark hover:text-green-dark transition-colors rounded-sm"
+            className="w-full group"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-            </svg>
-            {showBook ? "Close Guest Book" : "Browse the Handwritten Guest Book"}
+            <div className="relative bg-cream rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                {/* Left - visual */}
+                <div className="relative h-64 md:h-auto bg-green-dark flex items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 opacity-10">
+                    <svg viewBox="0 0 200 200" className="w-full h-full">
+                      <text x="20" y="40" className="fill-white text-[8px]" style={{ fontFamily: "serif", fontStyle: "italic" }}>What a wonderful stay...</text>
+                      <text x="30" y="60" className="fill-white text-[7px]" style={{ fontFamily: "serif" }}>We loved every moment</text>
+                      <text x="15" y="80" className="fill-white text-[9px]" style={{ fontFamily: "serif", fontStyle: "italic" }}>The lambs were adorable!</text>
+                      <text x="40" y="100" className="fill-white text-[6px]" style={{ fontFamily: "serif" }}>Beautiful cottage, beautiful farm</text>
+                      <text x="10" y="120" className="fill-white text-[8px]" style={{ fontFamily: "serif", fontStyle: "italic" }}>Can&apos;t wait to come back</text>
+                      <text x="25" y="140" className="fill-white text-[7px]" style={{ fontFamily: "serif" }}>Thank you Simon &amp; Lesley</text>
+                      <text x="35" y="160" className="fill-white text-[9px]" style={{ fontFamily: "serif", fontStyle: "italic" }}>A true hidden gem</text>
+                      <text x="20" y="180" className="fill-white text-[6px]" style={{ fontFamily: "serif" }}>Five stars from us!</text>
+                    </svg>
+                  </div>
+                  <div className="relative text-center p-8">
+                    <div className="w-16 h-16 mx-auto mb-4 border-2 border-white/30 rounded-full flex items-center justify-center">
+                      <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                      </svg>
+                    </div>
+                    <h3 className="font-serif text-2xl text-white mb-2">
+                      The Guest Book
+                    </h3>
+                    <p className="font-sans text-sm text-white/60">
+                      9 volumes of handwritten memories
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right - description */}
+                <div className="p-8 md:p-10 flex flex-col justify-center text-left">
+                  <p className="font-sans text-xs tracking-[0.2em] uppercase text-green-mid mb-3">
+                    Authentic Reviews
+                  </p>
+                  <h3 className="font-serif text-2xl text-stone-900 mb-3">
+                    Handwritten by Our Guests
+                  </h3>
+                  <p className="font-sans text-sm text-stone-500 leading-relaxed mb-6">
+                    Every guest leaves their mark in our handwritten guest book
+                    &mdash; complete with personal stories, drawings, children&apos;s
+                    doodles, and heartfelt thank-yous. No online reviews can
+                    capture the warmth of these pages.
+                  </p>
+                  <span className="inline-flex items-center gap-2 font-sans text-sm font-medium text-green-dark group-hover:text-green-mid transition-colors">
+                    {showBook ? "Close Guest Book" : "Browse the Guest Book"}
+                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
           </button>
-        </div>
+        </motion.div>
 
         {/* Embedded Guest Book */}
         {showBook && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-10"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="mt-8"
           >
-            <div className="bg-cream rounded-lg p-6 shadow-inner">
-              <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
-                {guestBookPages.map((_, i) => (
-                  <Link
-                    key={i}
-                    href={guestBookPages[i]}
-                    target="_blank"
-                    className="flex-shrink-0 px-4 py-2 bg-white rounded-lg font-sans text-sm text-stone-600 hover:text-green-dark hover:shadow-sm transition-all"
-                  >
-                    Volume {guestBookPages.length - i}
-                  </Link>
-                ))}
+            <div className="bg-cream rounded-2xl p-6 shadow-inner">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="font-serif text-lg text-stone-900">Browse the Volumes</h4>
+                <div className="flex gap-2 overflow-x-auto">
+                  {guestBookPages.map((_, i) => (
+                    <Link
+                      key={i}
+                      href={guestBookPages[i]}
+                      target="_blank"
+                      className="flex-shrink-0 px-4 py-2 bg-white rounded-lg font-sans text-xs text-stone-600 hover:text-green-dark hover:shadow-sm transition-all"
+                    >
+                      Vol. {guestBookPages.length - i}
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="bg-white rounded-lg overflow-hidden shadow-sm" style={{ height: "600px" }}>
+              <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ height: "550px" }}>
                 <iframe
                   src={`${guestBookPages[0]}#toolbar=0&navpanes=0`}
                   className="w-full h-full border-0"
@@ -144,7 +201,7 @@ export function GuestBookSection() {
                 />
               </div>
               <p className="font-sans text-xs text-stone-400 text-center mt-4">
-                Scroll through the pages to read handwritten entries, see drawings, and hear what guests loved about their stay.
+                Scroll through to read handwritten entries, see drawings, and hear what guests loved.
               </p>
             </div>
           </motion.div>

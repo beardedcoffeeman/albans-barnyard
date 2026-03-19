@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
+import { VisualEditor } from "./VisualEditor";
 
 interface PageSection {
   id: string;
@@ -50,8 +51,6 @@ export function AdminDashboard({ token }: { token: string }) {
   const [sections, setSections] = useState<PageSection[]>([]);
   const [bookings, setBookings] = useState<BookingRequest[]>([]);
   const [media, setMedia] = useState<MediaFile[]>([]);
-  const [editingSection, setEditingSection] = useState<string | null>(null);
-  const [editFields, setEditFields] = useState<Record<string, string | boolean | number>>({});
   const [uploading, setUploading] = useState(false);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
 
@@ -147,17 +146,6 @@ export function AdminDashboard({ token }: { token: string }) {
     setUploading(false);
     fetchMedia();
     e.target.value = "";
-  };
-
-  // Save section edits
-  const saveSection = async (id: string) => {
-    await fetch("/api/admin/content", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...authHeaders },
-      body: JSON.stringify({ sectionId: id, fields: editFields }),
-    });
-    setEditingSection(null);
-    fetchData();
   };
 
   const updateBooking = async (id: string, status: "approved" | "declined") => {
@@ -332,107 +320,8 @@ export function AdminDashboard({ token }: { token: string }) {
         </div>
       )}
 
-      {/* ===== PAGES ===== */}
-      {tab === "pages" && (
-        <div className="space-y-4">
-          <div className="bg-white rounded-2xl shadow-sm border border-stone-200/60 p-6">
-            <h2 className="font-serif text-lg text-stone-900 mb-1">Editable Sections</h2>
-            <p className="font-sans text-sm text-stone-400 mb-6">Click any section to edit its content. Changes update the website immediately.</p>
-          </div>
-          {sections.map((section) => (
-            <div key={section.id} className="bg-white rounded-2xl shadow-sm border border-stone-200/60 overflow-hidden">
-              <button
-                onClick={() => {
-                  if (editingSection === section.id) {
-                    setEditingSection(null);
-                  } else {
-                    setEditingSection(section.id);
-                    setEditFields(section.fields as Record<string, string | boolean | number>);
-                  }
-                }}
-                className="w-full flex items-center justify-between p-5 hover:bg-stone-50 transition-colors"
-              >
-                <div className="text-left">
-                  <h3 className="font-sans text-sm font-semibold text-stone-900">{section.label}</h3>
-                  <p className="font-sans text-xs text-stone-400 mt-0.5">
-                    {section.page} &middot; {Object.keys(section.fields).length} fields
-                  </p>
-                </div>
-                <svg className={`w-5 h-5 text-stone-400 transition-transform ${editingSection === section.id ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-              </button>
-
-              {editingSection === section.id && (
-                <div className="border-t border-stone-100 p-5 space-y-4">
-                  {Object.entries(editFields).map(([key, value]) => (
-                    <div key={key}>
-                      <label className="block font-sans text-xs font-medium text-stone-500 uppercase tracking-wider mb-1.5">
-                        {key.replace(/([A-Z])/g, " $1").trim()}
-                      </label>
-                      {typeof value === "boolean" ? (
-                        <button
-                          onClick={() => setEditFields((f) => ({ ...f, [key]: !value }))}
-                          className={`px-4 py-2 rounded-lg font-sans text-sm font-medium transition-colors ${
-                            value ? "bg-green-100 text-green-800" : "bg-stone-100 text-stone-500"
-                          }`}
-                        >
-                          {value ? "Enabled" : "Disabled"}
-                        </button>
-                      ) : typeof value === "string" && value.length > 80 ? (
-                        <textarea
-                          value={value}
-                          onChange={(e) => setEditFields((f) => ({ ...f, [key]: e.target.value }))}
-                          rows={3}
-                          className="w-full px-4 py-2.5 border border-stone-200 rounded-xl font-sans text-sm focus:outline-none focus:border-green-mid resize-none"
-                        />
-                      ) : typeof value === "string" && (value.startsWith("/images") || value.startsWith("/uploads")) ? (
-                        <div className="flex items-center gap-3">
-                          <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-stone-100 flex-shrink-0">
-                            <Image src={value} alt="" fill className="object-cover" sizes="64px" />
-                          </div>
-                          <input
-                            type="text"
-                            value={value}
-                            onChange={(e) => setEditFields((f) => ({ ...f, [key]: e.target.value }))}
-                            className="flex-1 px-4 py-2.5 border border-stone-200 rounded-xl font-sans text-sm focus:outline-none focus:border-green-mid"
-                          />
-                        </div>
-                      ) : (
-                        <input
-                          type={typeof value === "number" ? "number" : "text"}
-                          value={String(value)}
-                          onChange={(e) =>
-                            setEditFields((f) => ({
-                              ...f,
-                              [key]: typeof value === "number" ? Number(e.target.value) : e.target.value,
-                            }))
-                          }
-                          className="w-full px-4 py-2.5 border border-stone-200 rounded-xl font-sans text-sm focus:outline-none focus:border-green-mid"
-                        />
-                      )}
-                    </div>
-                  ))}
-                  <div className="flex gap-2 pt-2">
-                    <button
-                      onClick={() => saveSection(section.id)}
-                      className="px-6 py-2.5 bg-green-dark text-white rounded-xl font-sans text-sm font-medium hover:bg-green-mid transition-colors"
-                    >
-                      Save Changes
-                    </button>
-                    <button
-                      onClick={() => setEditingSection(null)}
-                      className="px-6 py-2.5 bg-stone-100 text-stone-600 rounded-xl font-sans text-sm font-medium hover:bg-stone-200 transition-colors"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+      {/* ===== PAGES (Visual Editor) ===== */}
+      {tab === "pages" && <VisualEditor token={token} />}
 
       {/* ===== MEDIA ===== */}
       {tab === "media" && (
