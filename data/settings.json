@@ -1,0 +1,11 @@
+{
+  "lambcamEnabled": true,
+  "lambcamMenuVisible": true,
+  "seasonalBannerTitle": "Lambing Season is Here",
+  "seasonalBannerSubtitle": "Watch our Jacob ewes and their lambs live on the Lambcam, or book a spring stay and experience it first-hand.",
+  "seasonalBannerSeason": "Spring 2026",
+  "seasonalBannerCta1Text": "Watch Live",
+  "seasonalBannerCta1Link": "/lambcam",
+  "seasonalBannerCta2Text": "Book a Spring Stay",
+  "seasonalBannerCta2Link": "/cox-cottage#booking"
+}

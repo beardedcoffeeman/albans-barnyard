@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #faf9f6;
+  --color-foreground: #2c2c2c;
+  --color-stone-50: #faf9f6;
+  --color-stone-100: #f5f0eb;
+  --color-stone-200: #e8e0d8;
+  --color-stone-300: #d4c9bd;
+  --color-stone-400: #b5a898;
+  --color-stone-500: #9d9270;
+  --color-stone-600: #7a7060;
+  --color-stone-700: #5c534a;
+  --color-stone-800: #3d3832;
+  --color-stone-900: #2c2c2c;
+  --color-green-dark: #2d3a2d;
+  --color-green-mid: #4a5d3f;
+  --color-green-light: #6b7f5e;
+  --color-green-muted: #8a9e7a;
+  --color-cream: #f5f0eb;
+  --color-cream-dark: #e8e0d8;
+  --color-burgundy: #571f2a;
+  --color-burgundy-light: #7a3040;
+  --color-gold: #c4a35a;
+  --color-gold-light: #d4b76e;
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+::selection {
+  background-color: var(--color-green-muted);
+  color: white;
+}
+
+/* Premium letter spacing for headings */
+.heading-spaced {
+  letter-spacing: 0.05em;
+}
+
+.heading-wide {
+  letter-spacing: 0.15em;
+}
+
+/* Smooth image reveal animation */
+@keyframes imageReveal {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-image-reveal {
+  animation: imageReveal 1.2s ease-out forwards;
+}
+
+/* Subtle float animation for decorative elements */
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-subtle-float {
+  animation: subtleFloat 6s ease-in-out infinite;
+}
+
+/* Slow Ken Burns zoom for background images */
+@keyframes kenBurns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.08);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurns 20s ease-in-out alternate infinite;
+}
+
+/* Subtle shimmer for gold accents */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Smooth parallax scrolling sections */
+.parallax-section {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .parallax-section {
+    background-attachment: scroll;
+  }
+}
+
+/* Live indicator pulse */
+@keyframes livePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-live-pulse {
+  animation: livePulse 2s ease-in-out infinite;
 }
