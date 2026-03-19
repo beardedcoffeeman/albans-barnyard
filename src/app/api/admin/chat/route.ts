@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthorized, unauthorizedResponse } from "@/lib/adminAuth";
 import Anthropic from "@anthropic-ai/sdk";
 import {
   getAvailability,
@@ -198,6 +199,7 @@ function executeTool(
 }
 
 export async function POST(request: NextRequest) {
+  if (!isAuthorized(request)) return unauthorizedResponse();
   if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === "your-api-key-here") {
     return NextResponse.json(
       { error: "Anthropic API key not configured. Add it to .env.local" },

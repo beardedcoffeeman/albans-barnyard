@@ -44,7 +44,8 @@ interface AnalyticsSummary {
   topReferers: { referer: string; count: number }[];
 }
 
-export function AdminDashboard() {
+export function AdminDashboard({ token }: { token: string }) {
+  const authHeaders = { Authorization: `Bearer ${token}` };
   const [tab, setTab] = useState<"chat" | "pages" | "media" | "bookings" | "analytics">("chat");
   const [sections, setSections] = useState<PageSection[]>([]);
   const [bookings, setBookings] = useState<BookingRequest[]>([]);
@@ -64,7 +65,7 @@ export function AdminDashboard() {
 
   const fetchData = useCallback(async () => {
     const [contentRes, bkRes] = await Promise.all([
-      fetch("/api/admin/content"),
+      fetch("/api/admin/content", { headers: authHeaders }),
       fetch("/api/bookings"),
     ]);
     const content = await contentRes.json();
@@ -75,7 +76,7 @@ export function AdminDashboard() {
   const fetchMedia = useCallback(async () => {
     // Scan uploads directory via a simple endpoint
     try {
-      const res = await fetch("/api/admin/upload");
+      const res = await fetch("/api/admin/upload", { headers: authHeaders });
       if (res.ok) setMedia(await res.json());
     } catch {
       // no-op
@@ -114,7 +115,7 @@ export function AdminDashboard() {
       ];
       const res = await fetch("/api/admin/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders },
         body: JSON.stringify({ messages: apiMessages }),
       });
       const data = await res.json();
@@ -141,7 +142,7 @@ export function AdminDashboard() {
     for (const file of Array.from(files)) {
       const formData = new FormData();
       formData.append("file", file);
-      await fetch("/api/admin/upload", { method: "POST", body: formData });
+      await fetch("/api/admin/upload", { method: "POST", body: formData, headers: authHeaders });
     }
     setUploading(false);
     fetchMedia();
@@ -152,7 +153,7 @@ export function AdminDashboard() {
   const saveSection = async (id: string) => {
     await fetch("/api/admin/content", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       body: JSON.stringify({ sectionId: id, fields: editFields }),
     });
     setEditingSection(null);

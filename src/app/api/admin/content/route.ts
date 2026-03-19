@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthorized, unauthorizedResponse } from "@/lib/adminAuth";
 import { getContent, updateSection } from "@/lib/contentStore";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  if (!isAuthorized(request)) return unauthorizedResponse();
   return NextResponse.json(getContent());
 }
 
 export async function POST(request: NextRequest) {
+  if (!isAuthorized(request)) return unauthorizedResponse();
   const { sectionId, fields } = await request.json();
   if (!sectionId) {
     return NextResponse.json({ error: "sectionId required" }, { status: 400 });

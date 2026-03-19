@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AdminDashboard } from "./AdminDashboard";
+import { AdminApp } from "./AdminApp";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminPage() {
-  return <AdminDashboard />;
+  return <AdminApp />;
 }
