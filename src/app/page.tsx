@@ -2,6 +2,7 @@ import { Hero } from "@/components/Hero";
 import { AboutSection } from "@/components/AboutSection";
 import { CottagePreview } from "@/components/CottagePreview";
 import { LambcamPreview } from "@/components/LambcamPreview";
+import { VideoSection } from "@/components/VideoSection";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
 import { ProductsSection } from "@/components/ProductsSection";
 import { GuestBookSection } from "@/components/GuestBookSection";
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <AboutSection />
       <CottagePreview />
+      <VideoSection />
       <LambcamPreview />
       <SeasonalBanner />
       <ProductsSection />
