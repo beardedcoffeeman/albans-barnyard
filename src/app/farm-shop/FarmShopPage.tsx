@@ -50,7 +50,7 @@ const products = [
     price: "From £50",
     description:
       "Seasonal boxes of rare breed pork and lamb, raised slowly on natural pasture. Our animals are born and reared on the farm with the highest welfare standards.",
-    image: "/images/products/cattle.jpg",
+    image: "/images/products/meat-box.jpg",
     details: [
       "Rare breed pork & lamb",
       "Born and reared on the farm",

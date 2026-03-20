@@ -170,18 +170,28 @@ export function ContactPage() {
 
                 <div>
                   <h3 className="font-sans text-xs tracking-[0.2em] uppercase text-green-mid mb-3">
-                    Directions
+                    Finding Us
+                  </h3>
+                  <p className="font-sans text-sm text-stone-600 leading-relaxed mb-3">
+                    The easiest way to find us is to search for
+                    <strong> &ldquo;Albans Barnyard&rdquo; </strong>
+                    in Google Maps or Waze &mdash; we have a pin that will bring
+                    you straight to the farm gate. We&apos;d recommend this over
+                    a postcode, as satnav systems have been known to send
+                    visitors somewhere else entirely!
+                  </p>
+                  <h3 className="font-sans text-xs tracking-[0.2em] uppercase text-green-mid mb-3 mt-6">
+                    Old-Fashioned Directions
                   </h3>
                   <p className="font-sans text-sm text-stone-600 leading-relaxed">
-                    Our cottage near Tunbridge Wells is tucked away down a farm
-                    track, so satnav can be unreliable. From Matfield village,
-                    take the B2160 south. After passing The Poet restaurant,
-                    take the first left into Foxhole Lane, then immediately left
-                    again into Romford Road. Follow the track to the farm.
-                  </p>
-                  <p className="font-sans text-sm text-stone-500 mt-2">
-                    Tip: Use postcode TN12 7JH for The Poet, then follow our
-                    directions from there.
+                    From Matfield village on the B2160, find The Poet restaurant
+                    (postcode TN12 7JH) and turn into Chestnut Lane beside it.
+                    After 300 yards, turn left into Foxhole Lane. Follow the
+                    lane down into the valley, then bear right up the hill onto
+                    Romford Road. On the brow of the hill, turn right into the
+                    farm track marked &ldquo;Albans Farm and Springhill Trout
+                    Fishery.&rdquo; Follow the track to the very end and through
+                    some wooden gates into Alban&apos;s Barnyard.
                   </p>
                 </div>
               </div>

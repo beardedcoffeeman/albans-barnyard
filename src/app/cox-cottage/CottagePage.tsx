@@ -205,6 +205,36 @@ export function CottagePage() {
         </div>
       </section>
 
+      {/* Welcome Touch */}
+      <section className="py-16 bg-cream">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
+              <Image
+                src="/images/cottage/welcome-hamper.png"
+                alt="Welcome hamper with eggs, honey, cake and local produce"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div>
+              <p className="font-sans text-xs tracking-[0.3em] uppercase text-green-mid mb-4">
+                A Warm Welcome
+              </p>
+              <h2 className="font-serif text-3xl md:text-4xl font-light text-stone-900 mb-6">
+                The Little Touches <span className="italic">That Matter</span>
+              </h2>
+              <p className="font-sans text-stone-600 leading-relaxed">
+                Every stay begins with a welcome hamper of farm produce &mdash;
+                freshly laid eggs, our own honey, homemade cake, and a selection
+                of local treats. It&apos;s our way of saying welcome to the farm.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Sustainability Banner */}
       <section className="py-16 bg-green-dark">
         <div className="max-w-5xl mx-auto px-6">

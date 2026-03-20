@@ -24,7 +24,7 @@ const products = [
     title: "Meat Boxes",
     description:
       "Seasonal boxes of rare breed pork and lamb, raised slowly on natural pasture right here on the farm.",
-    image: "/images/products/cattle.jpg",
+    image: "/images/products/meat-box.jpg",
     href: "/farm-shop",
   },
 ];
