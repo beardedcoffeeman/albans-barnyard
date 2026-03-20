@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 
 const guestBookUrl = "https://www.albansbarnyard.co.uk/wp-content/uploads/2025/05/coxcottageguestbook9.pdf";
@@ -38,7 +38,11 @@ export function GuestBookSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [active, setActive] = useState(0);
   const [showBook, setShowBook] = useState(false);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-white">
