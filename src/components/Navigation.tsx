@@ -52,7 +52,7 @@ export function Navigation() {
                 showTransparent ? "text-white" : "text-green-dark"
               }`}
             >
-              Alban&apos;s Barnyard
+              Albans Barnyard
             </motion.span>
           </Link>
 

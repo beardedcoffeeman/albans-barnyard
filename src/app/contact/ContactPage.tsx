@@ -107,7 +107,7 @@ export function ContactPage() {
                     Address
                   </h3>
                   <p className="font-sans text-stone-600 leading-relaxed">
-                    Alban&apos;s Barnyard
+                    Albans Barnyard
                     <br />
                     Romford Road
                     <br />
@@ -191,7 +191,7 @@ export function ContactPage() {
                     Romford Road. On the brow of the hill, turn right into the
                     farm track marked &ldquo;Albans Farm and Springhill Trout
                     Fishery.&rdquo; Follow the track to the very end and through
-                    some wooden gates into Alban&apos;s Barnyard.
+                    some wooden gates into Albans Barnyard.
                   </p>
                 </div>
               </div>

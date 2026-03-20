@@ -94,7 +94,7 @@ export function FarmPage() {
               </h2>
               <div className="space-y-5 font-sans text-stone-600 leading-relaxed">
                 <p>
-                  Alban&apos;s Barnyard is a small family farm nestled in the
+                  Albans Barnyard is a small family farm nestled in the
                   Kentish Weald, where we raise pedigree Jacob sheep and North
                   Devon Red Ruby cattle using traditional, high-welfare methods.
                 </p>

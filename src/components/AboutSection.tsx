@@ -72,7 +72,7 @@ export function AboutSection() {
               className="space-y-5 font-sans text-stone-600 leading-relaxed"
             >
               <p>
-                Set in the heart of the Kentish Weald, Alban&apos;s Barnyard is
+                Set in the heart of the Kentish Weald, Albans Barnyard is
                 a small working farm raising pedigree Jacob sheep and North Devon
                 Red Ruby cattle among rolling orchards and ancient woodland. For
                 those seeking luxury farm stays in the UK, this is a place where

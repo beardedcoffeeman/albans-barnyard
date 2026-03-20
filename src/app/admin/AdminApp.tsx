@@ -38,7 +38,7 @@ export function AdminApp() {
             </div>
             <h1 className="font-serif text-2xl text-stone-900">Admin Login</h1>
             <p className="font-sans text-sm text-stone-400 mt-1">
-              Alban&apos;s Barnyard
+              Albans Barnyard
             </p>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">

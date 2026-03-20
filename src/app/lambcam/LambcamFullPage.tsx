@@ -232,7 +232,7 @@ export function LambcamFullPage() {
               <div key={i} className="relative aspect-square overflow-hidden">
                 <Image
                   src={src}
-                  alt="Farm life at Alban's Barnyard"
+                  alt="Farm life at Albans Barnyard"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 50vw, 25vw"

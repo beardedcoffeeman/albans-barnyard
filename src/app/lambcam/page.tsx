@@ -4,7 +4,7 @@ import { LambcamFullPage } from "./LambcamFullPage";
 export const metadata: Metadata = {
   title: "Lambcam",
   description:
-    "A live lambing experience from the comfort of your screen. Watch our Jacob sheep and lambs from the shed at Alban's Barnyard in Kent, with two camera angles.",
+    "A live lambing experience from the comfort of your screen. Watch our Jacob sheep and lambs from the shed at Albans Barnyard in Kent, with two camera angles.",
 };
 
 export default function LambcamPage() {

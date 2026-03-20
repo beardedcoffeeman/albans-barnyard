@@ -27,7 +27,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <h3 className="font-serif text-2xl text-white mb-4">
-              Alban&apos;s Barnyard
+              Albans Barnyard
             </h3>
             <p className="text-sm leading-relaxed text-white/60">
               A Weald of Kent cottage on a working farm, just five miles
@@ -66,7 +66,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/40">
-            &copy; 2026 Alban&apos;s Barnyard. All rights reserved.
+            &copy; 2026 Albans Barnyard. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link

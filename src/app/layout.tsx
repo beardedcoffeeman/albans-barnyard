@@ -22,8 +22,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Alban's Barnyard | Luxury Farm Stay in the Weald of Kent",
-    template: "%s | Alban's Barnyard",
+    default: "Albans Barnyard | Luxury Farm Stay in the Weald of Kent",
+    template: "%s | Albans Barnyard",
   },
   description:
     "One of the finest luxury farm stays near London. Cox Cottage is a beautifully restored holiday cottage in Kent on a working farm with artisan produce.",
@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     "farm stay with animals",
     "cottage near Tunbridge Wells",
   ],
-  authors: [{ name: "Alban's Barnyard" }],
+  authors: [{ name: "Albans Barnyard" }],
   openGraph: {
     type: "website",
     locale: "en_GB",
-    siteName: "Alban's Barnyard",
-    title: "Alban's Barnyard | Luxury Farm Stay in Kent",
+    siteName: "Albans Barnyard",
+    title: "Albans Barnyard | Luxury Farm Stay in Kent",
     description:
       "Escape to Cox Cottage on a working farm in the Weald of Kent. Two ensuite bedrooms, wood burning stove, and Jacob sheep on the doorstep.",
     images: [
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
         url: "/images/cottage/cottages-05.jpg",
         width: 1200,
         height: 800,
-        alt: "Cox Cottage at Alban's Barnyard",
+        alt: "Cox Cottage at Albans Barnyard",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alban's Barnyard | Luxury Farm Stay in Kent",
+    title: "Albans Barnyard | Luxury Farm Stay in Kent",
     description:
       "Escape to Cox Cottage on a working farm in the Weald of Kent.",
     images: ["/images/cottage/cottages-05.jpg"],
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LodgingBusiness",
-  name: "Alban's Barnyard - Cox Cottage",
+  name: "Albans Barnyard - Cox Cottage",
   description:
     "Luxury self-catering holiday cottage on a working farm in Pembury, Kent. Two ensuite bedrooms, wood burning stove, hand-built kitchen.",
   url: "https://albansbarnyard.co.uk",

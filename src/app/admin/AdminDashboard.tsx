@@ -185,7 +185,7 @@ export function AdminDashboard({ token }: { token: string }) {
             <span className="text-white font-serif text-lg">A</span>
           </div>
           <div>
-            <h1 className="font-serif text-xl text-stone-900">Alban&apos;s Barnyard</h1>
+            <h1 className="font-serif text-xl text-stone-900">Albans Barnyard</h1>
             <p className="font-sans text-xs text-stone-400">Content Manager</p>
           </div>
         </div>
