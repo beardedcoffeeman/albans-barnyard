@@ -94,7 +94,7 @@ export function FarmShopPage() {
       <section className="py-20 bg-white">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <p className="font-sans text-lg text-stone-600 leading-relaxed">
-            Everything we sell comes directly from the farm &mdash; available to
+            Everything we sell comes directly from the farm, available to
             order online or collect during your cottage holiday in Kent. Our
             sheepskins are from our own Jacob flock, our honey from our own
             hives, and our meat from animals born and raised right here in the
@@ -175,7 +175,7 @@ export function FarmShopPage() {
             Styled in the Cottage
           </h2>
           <p className="font-sans text-stone-500 text-center mb-12 max-w-xl mx-auto">
-            See how our Jacob sheepskins look in Cox Cottage &mdash; every one
+            See how our Jacob sheepskins look in Cox Cottage. Every one
             is unique, just like the sheep it came from.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

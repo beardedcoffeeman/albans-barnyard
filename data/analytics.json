@@ -106,5 +106,35 @@
     "timestamp": "2026-03-20T08:50:21.722Z",
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
     "referer": "http://localhost:3002/"
+  },
+  {
+    "path": "/cox-cottage",
+    "timestamp": "2026-03-20T08:51:15.549Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/cox-cottage"
+  },
+  {
+    "path": "/",
+    "timestamp": "2026-03-20T08:52:05.411Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/"
+  },
+  {
+    "path": "/cox-cottage",
+    "timestamp": "2026-03-20T08:52:46.592Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/cox-cottage"
+  },
+  {
+    "path": "/farm-shop",
+    "timestamp": "2026-03-20T08:52:50.387Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/farm-shop"
+  },
+  {
+    "path": "/",
+    "timestamp": "2026-03-20T08:52:59.828Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/"
   }
 ]

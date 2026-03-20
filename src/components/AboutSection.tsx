@@ -80,8 +80,8 @@ export function AboutSection() {
               </p>
               <p>
                 Cox Cottage has been lovingly designed with sustainability at its
-                heart &mdash; powered by ground source heat pump, solar panels,
-                and heat recovery ventilation &mdash; without compromising on
+                heart, powered by ground source heat pump, solar panels,
+                and heat recovery ventilation, without compromising on
                 comfort. Dijon limestone floors, a hand-built kitchen, and a wood
                 burning stove create the perfect self catering cottage in Kent.
               </p>

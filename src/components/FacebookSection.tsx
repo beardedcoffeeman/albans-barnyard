@@ -44,7 +44,7 @@ export function FacebookSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="font-sans text-stone-500 max-w-lg mx-auto"
           >
-            Follow us on Facebook for daily updates &mdash; lambing news, seasonal
+            Follow us on Facebook for daily updates: lambing news, seasonal
             changes, and life on the farm.
           </motion.p>
         </div>

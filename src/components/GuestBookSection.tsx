@@ -59,7 +59,7 @@ export function GuestBookSection() {
             What Our Guests Say
           </h2>
           <p className="font-sans text-stone-500 max-w-lg mx-auto">
-            Real entries from our handwritten guest book at Cox Cottage &mdash;
+            Real entries from our handwritten guest book at Cox Cottage,
             complete with drawings, doodles, and heartfelt messages.
           </p>
         </motion.div>
@@ -154,7 +154,7 @@ export function GuestBookSection() {
                   </h3>
                   <p className="font-sans text-sm text-stone-500 leading-relaxed mb-6">
                     Every guest leaves their mark in our handwritten guest book
-                    &mdash; complete with personal stories, drawings, children&apos;s
+                   , complete with personal stories, drawings, children&apos;s
                     doodles, and heartfelt thank-yous. No online reviews can
                     capture the warmth of these pages.
                   </p>

@@ -203,7 +203,7 @@ export function LambcamFullPage() {
               </h3>
               <p className="font-sans text-sm text-stone-600 leading-relaxed">
                 Lambing typically runs from late February through March. During
-                this time, the cameras are active around the clock &mdash; offering
+                this time, the cameras are active around the clock. This offers
                 a live lambing experience from wherever you are. You might
                 see ewes being brought in, lambs being born, and their first
                 wobbly steps.

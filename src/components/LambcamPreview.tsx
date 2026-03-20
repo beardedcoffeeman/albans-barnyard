@@ -43,7 +43,7 @@ export function LambcamPreview() {
               <p className="font-sans text-base text-white/70 leading-relaxed mb-8">
                 Watch our flock in real-time. During lambing season, you can
                 witness the arrival of new lambs from the comfort of your screen
-                &mdash; a true lambing experience from wherever you are.
+               , a true lambing experience from wherever you are.
                 Our Jacob sheep have been a beloved feature of the farm for
                 generations.
               </p>
@@ -114,7 +114,7 @@ export function LambcamPreview() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
                 </span>
                 <span className="font-sans text-xs text-white/90">
-                  Camera {cameras[activeCamera].id} &mdash;{" "}
+                  Camera {cameras[activeCamera].id} -{" "}
                   {cameras[activeCamera].label}
                 </span>
               </div>

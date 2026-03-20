@@ -175,7 +175,7 @@ export function ContactPage() {
                   <p className="font-sans text-sm text-stone-600 leading-relaxed mb-3">
                     The easiest way to find us is to search for
                     <strong> &ldquo;Albans Barnyard&rdquo; </strong>
-                    in Google Maps or Waze &mdash; we have a pin that will bring
+                    in Google Maps or Waze. We have a pin that will bring
                     you straight to the farm gate. We&apos;d recommend this over
                     a postcode, as satnav systems have been known to send
                     visitors somewhere else entirely!

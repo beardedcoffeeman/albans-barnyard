@@ -23,14 +23,14 @@ export function VideoSection() {
                 Watch
               </p>
               <h2 className="font-serif text-3xl md:text-4xl font-light text-white leading-tight mb-4">
-                Discover
+                Lambs at
                 <br />
-                <span className="italic">Cox Cottage</span>
+                <span className="italic">Play</span>
               </h2>
               <p className="font-sans text-sm text-white/60 leading-relaxed">
-                Take a tour of the cottage and the farm. See the hand-built
-                kitchen, cosy wood stove, spacious bedrooms, and the rolling Kent
-                countryside right on the doorstep.
+                Our Jacob lambs enjoying spring sunshine on the farm. There&apos;s
+                nothing quite like watching them chase each other across the
+                fields, and guests at Cox Cottage can see it first-hand.
               </p>
             </motion.div>
 

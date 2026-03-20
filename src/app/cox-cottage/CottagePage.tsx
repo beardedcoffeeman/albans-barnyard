@@ -226,7 +226,7 @@ export function CottagePage() {
                 The Little Touches <span className="italic">That Matter</span>
               </h2>
               <p className="font-sans text-stone-600 leading-relaxed">
-                Every stay begins with a welcome hamper of farm produce &mdash;
+                Every stay begins with a welcome hamper of farm produce:
                 freshly laid eggs, our own honey, homemade cake, and a selection
                 of local treats. It&apos;s our way of saying welcome to the farm.
               </p>
