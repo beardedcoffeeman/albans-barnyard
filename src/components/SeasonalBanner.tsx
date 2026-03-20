@@ -10,14 +10,14 @@ export function SeasonalBanner() {
 
   return (
     <section ref={ref} className="relative py-32 md:py-40 overflow-hidden">
-      {/* Background - misty morning cattle scene */}
+      {/* Background - lambs on the farm */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
+        className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url(/images/farm/lambs-field.jpg)",
+          backgroundImage: "url(/images/farm/flock-summer.jpg)",
         }}
       >
-        <div className="absolute inset-0 bg-green-dark/60" />
+        <div className="absolute inset-0 bg-green-dark/55" />
       </div>
 
       <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">

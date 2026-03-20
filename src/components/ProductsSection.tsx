@@ -82,6 +82,21 @@ export function ProductsSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-center mt-12"
+        >
+          <Link
+            href="/contact"
+            className="inline-block px-10 py-4 bg-green-dark text-white font-sans text-sm tracking-[0.2em] uppercase hover:bg-green-mid transition-colors duration-300"
+          >
+            Enquire to Order
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
