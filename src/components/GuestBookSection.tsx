@@ -4,11 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Link from "next/link";
 
-const guestBookPages = [
-  "https://www.albansbarnyard.co.uk/wp-content/uploads/2025/05/coxcottageguestbook9.pdf",
-  "https://www.albansbarnyard.co.uk/wp-content/uploads/2024/04/coxcottageguestbook8.pdf",
-  "https://www.albansbarnyard.co.uk/wp-content/uploads/2023/10/coxcottageguestbook7.pdf",
-];
+const guestBookUrl = "https://www.albansbarnyard.co.uk/wp-content/uploads/2025/05/coxcottageguestbook9.pdf";
 
 const testimonials = [
   {
@@ -42,6 +38,7 @@ export function GuestBookSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [active, setActive] = useState(0);
   const [showBook, setShowBook] = useState(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-white">
@@ -109,9 +106,17 @@ export function GuestBookSection() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <button
-            onClick={() => setShowBook(!showBook)}
-            className="w-full group"
+          <a
+            href={isMobile ? guestBookUrl : undefined}
+            target={isMobile ? "_blank" : undefined}
+            rel={isMobile ? "noopener noreferrer" : undefined}
+            onClick={(e) => {
+              if (!isMobile) {
+                e.preventDefault();
+                setShowBook(!showBook);
+              }
+            }}
+            className="w-full group block cursor-pointer"
           >
             <div className="relative bg-cream rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
               <div className="grid grid-cols-1 md:grid-cols-2">
@@ -167,66 +172,34 @@ export function GuestBookSection() {
                 </div>
               </div>
             </div>
-          </button>
+          </a>
         </motion.div>
 
-        {/* Embedded Guest Book */}
+        {/* Embedded Guest Book (desktop only) */}
         {showBook && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="mt-8"
+            className="mt-8 hidden md:block"
           >
-            {/* Mobile: volume buttons that open in new tab */}
-            <div className="md:hidden bg-cream rounded-2xl p-6 shadow-inner">
-              <h4 className="font-serif text-lg text-stone-900 mb-4">Choose a Volume</h4>
-              <div className="space-y-3">
-                {guestBookPages.map((url, i) => (
-                  <Link
-                    key={i}
-                    href={url}
-                    target="_blank"
-                    className="flex items-center justify-between w-full px-5 py-4 bg-white rounded-xl font-sans text-sm text-stone-700 hover:shadow-md transition-all"
-                  >
-                    <span>Guest Book Volume {guestBookPages.length - i}</span>
-                    <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                    </svg>
-                  </Link>
-                ))}
-              </div>
-              <p className="font-sans text-xs text-stone-400 text-center mt-4">
-                Opens in a new tab for easy reading.
-              </p>
-            </div>
-
-            {/* Desktop: embedded PDF viewer */}
-            <div className="hidden md:block bg-cream rounded-2xl p-6 shadow-inner">
+            <div className="bg-cream rounded-2xl p-6 shadow-inner">
               <div className="flex items-center justify-between mb-4">
-                <h4 className="font-serif text-lg text-stone-900">Browse the Volumes</h4>
-                <div className="flex gap-2">
-                  {guestBookPages.map((url, i) => (
-                    <Link
-                      key={i}
-                      href={url}
-                      target="_blank"
-                      className="flex-shrink-0 px-4 py-2 bg-white rounded-lg font-sans text-xs text-stone-600 hover:text-green-dark hover:shadow-sm transition-all"
-                    >
-                      Vol. {guestBookPages.length - i}
-                    </Link>
-                  ))}
-                </div>
+                <h4 className="font-serif text-lg text-stone-900">Guest Book</h4>
+                <Link
+                  href={guestBookUrl}
+                  target="_blank"
+                  className="px-4 py-2 bg-white rounded-lg font-sans text-xs text-stone-600 hover:text-green-dark hover:shadow-sm transition-all"
+                >
+                  Open in New Tab
+                </Link>
               </div>
               <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ height: "550px" }}>
                 <iframe
-                  src={`${guestBookPages[0]}#toolbar=0&navpanes=0`}
+                  src={`${guestBookUrl}#toolbar=0&navpanes=0`}
                   className="w-full h-full border-0"
                   title="Cox Cottage Guest Book"
                 />
               </div>
-              <p className="font-sans text-xs text-stone-400 text-center mt-4">
-                Scroll through to read handwritten entries, see drawings, and hear what guests loved.
-              </p>
             </div>
           </motion.div>
         )}
