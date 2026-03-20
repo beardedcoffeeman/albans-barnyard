@@ -1,39 +1,51 @@
 /**
  * Database abstraction layer.
- * Uses Vercel KV (Redis) when available, falls back to filesystem for local dev.
- *
- * To enable Vercel KV:
- * 1. Go to Vercel dashboard > your project > Storage > Create KV Store
- * 2. It auto-creates KV_REST_API_URL and KV_REST_API_TOKEN env vars
- * 3. Redeploy - it just works
+ * Uses Upstash Redis when REDIS_URL is available, falls back to filesystem for local dev.
  */
 
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 
-const IS_KV_AVAILABLE =
-  !!process.env.KV_REST_API_URL && !!process.env.KV_REST_API_TOKEN;
+let redis: Redis | null = null;
 
-// Filesystem fallback for local dev
-let fsModule: typeof import("fs") | null = null;
-let pathModule: typeof import("path") | null = null;
+function getRedis(): Redis | null {
+  if (redis) return redis;
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  // Also try REDIS_URL format (upstash:// protocol)
+  const redisUrl = process.env.REDIS_URL;
 
-async function getFs() {
-  if (!fsModule) {
-    fsModule = await import("fs");
-    pathModule = await import("path");
+  if (url && token) {
+    redis = new Redis({ url, token });
+    return redis;
   }
-  return { fs: fsModule, path: pathModule! };
+  if (redisUrl && redisUrl.startsWith("rediss://")) {
+    // Parse Upstash Redis URL
+    try {
+      const parsed = new URL(redisUrl);
+      redis = new Redis({
+        url: `https://${parsed.hostname}`,
+        token: parsed.password,
+      });
+      return redis;
+    } catch {
+      return null;
+    }
+  }
+  return null;
 }
 
-function filePath(key: string): string {
-  // Convert key like "bookings" to "data/bookings.json"
-  return `data/${key}.json`;
+// Filesystem fallback for local dev
+async function getFs() {
+  const fs = await import("fs");
+  const path = await import("path");
+  return { fs, path };
 }
 
 export async function dbGet<T>(key: string, fallback: T): Promise<T> {
-  if (IS_KV_AVAILABLE) {
+  const r = getRedis();
+  if (r) {
     try {
-      const data = await kv.get<T>(key);
+      const data = await r.get<T>(key);
       return data ?? fallback;
     } catch {
       return fallback;
@@ -42,7 +54,7 @@ export async function dbGet<T>(key: string, fallback: T): Promise<T> {
 
   // Filesystem fallback
   const { fs, path } = await getFs();
-  const fp = path.join(process.cwd(), filePath(key));
+  const fp = path.join(process.cwd(), "data", `${key}.json`);
   if (!fs.existsSync(fp)) return fallback;
   try {
     return JSON.parse(fs.readFileSync(fp, "utf-8"));
@@ -52,17 +64,16 @@ export async function dbGet<T>(key: string, fallback: T): Promise<T> {
 }
 
 export async function dbSet<T>(key: string, data: T): Promise<void> {
-  if (IS_KV_AVAILABLE) {
-    await kv.set(key, data);
+  const r = getRedis();
+  if (r) {
+    await r.set(key, data);
     return;
   }
 
   // Filesystem fallback
   const { fs, path } = await getFs();
-  const fp = path.join(process.cwd(), filePath(key));
+  const fp = path.join(process.cwd(), "data", `${key}.json`);
   const dir = path.dirname(fp);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(fp, JSON.stringify(data, null, 2), "utf-8");
 }
-
-export { IS_KV_AVAILABLE };
