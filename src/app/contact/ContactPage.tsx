@@ -173,11 +173,11 @@ export function ContactPage() {
                     Directions
                   </h3>
                   <p className="font-sans text-sm text-stone-600 leading-relaxed">
-                    We&apos;re tucked away down a farm track, so satnav can be
-                    unreliable. From Matfield village, take the B2160 south.
-                    After passing The Poet restaurant, take the first left into
-                    Foxhole Lane, then immediately left again into Romford Road.
-                    Follow the track to the farm.
+                    Our cottage near Tunbridge Wells is tucked away down a farm
+                    track, so satnav can be unreliable. From Matfield village,
+                    take the B2160 south. After passing The Poet restaurant,
+                    take the first left into Foxhole Lane, then immediately left
+                    again into Romford Road. Follow the track to the farm.
                   </p>
                   <p className="font-sans text-sm text-stone-500 mt-2">
                     Tip: Use postcode TN12 7JH for The Poet, then follow our

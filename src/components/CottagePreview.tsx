@@ -6,8 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 const features = [
-  { icon: "bed", label: "2 Bedrooms", detail: "King & Double with ensuites" },
-  { icon: "users", label: "Sleeps 4", detail: "Perfect for couples & families" },
+  { icon: "bed", label: "2 Bedrooms", detail: "King & double with ensuites" },
+  { icon: "users", label: "Sleeps 4", detail: "Couples & families welcome" },
   { icon: "flame", label: "Wood Stove", detail: "Cosy Charnwood burner" },
   { icon: "leaf", label: "Eco-Friendly", detail: "Ground source heat pump & solar" },
 ];

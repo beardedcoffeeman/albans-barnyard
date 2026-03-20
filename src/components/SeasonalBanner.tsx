@@ -46,7 +46,7 @@ export function SeasonalBanner() {
           className="font-sans text-base md:text-lg text-white/70 leading-relaxed mb-10 max-w-xl mx-auto"
         >
           Watch our Jacob ewes and their lambs live on the Lambcam, or book a
-          spring stay and experience it first-hand.
+          luxury farm stay with animals and experience it first-hand.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

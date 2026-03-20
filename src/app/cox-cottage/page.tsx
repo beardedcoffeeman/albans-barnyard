@@ -4,7 +4,7 @@ import { CottagePage } from "./CottagePage";
 export const metadata: Metadata = {
   title: "Cox Cottage",
   description:
-    "A beautifully restored luxury holiday cottage with two ensuite bedrooms, wood burning stove, hand-built kitchen, and private garden on a working farm in Kent.",
+    "Book our self catering holiday cottage in Kent. Two ensuite bedrooms, wood burning stove, hand-built kitchen, and private garden on a working farm in the Weald.",
 };
 
 export default function CoxCottagePage() {

@@ -74,14 +74,16 @@ export function AboutSection() {
               <p>
                 Set in the heart of the Kentish Weald, Alban&apos;s Barnyard is
                 a small working farm raising pedigree Jacob sheep and North Devon
-                Red Ruby cattle among rolling orchards and ancient woodland.
+                Red Ruby cattle among rolling orchards and ancient woodland. For
+                those seeking luxury farm stays in the UK, this is a place where
+                the land shapes everything.
               </p>
               <p>
                 Cox Cottage has been lovingly designed with sustainability at its
                 heart &mdash; powered by ground source heat pump, solar panels,
                 and heat recovery ventilation &mdash; without compromising on
-                luxury. Dijon limestone floors, a hand-built kitchen, and a wood
-                burning stove create the perfect retreat.
+                comfort. Dijon limestone floors, a hand-built kitchen, and a wood
+                burning stove create the perfect self catering cottage in Kent.
               </p>
               <p>
                 Whether you&apos;re watching lambs in spring, tasting our own

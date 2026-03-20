@@ -28,5 +28,53 @@
     "timestamp": "2026-03-19T23:41:10.965Z",
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
     "referer": "http://localhost:3002/"
+  },
+  {
+    "path": "/",
+    "timestamp": "2026-03-20T07:44:14.835Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/"
+  },
+  {
+    "path": "/cox-cottage",
+    "timestamp": "2026-03-20T07:44:27.264Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/cox-cottage"
+  },
+  {
+    "path": "/the-farm",
+    "timestamp": "2026-03-20T07:44:35.151Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/the-farm"
+  },
+  {
+    "path": "/farm-shop",
+    "timestamp": "2026-03-20T07:44:43.409Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/farm-shop"
+  },
+  {
+    "path": "/contact",
+    "timestamp": "2026-03-20T07:45:00.113Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/contact"
+  },
+  {
+    "path": "/farm-shop",
+    "timestamp": "2026-03-20T07:45:02.712Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/farm-shop"
+  },
+  {
+    "path": "/contact",
+    "timestamp": "2026-03-20T07:45:16.426Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/contact"
+  },
+  {
+    "path": "/",
+    "timestamp": "2026-03-20T07:45:19.029Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3002/"
   }
 ]

@@ -4,7 +4,7 @@ import { FarmPage } from "./FarmPage";
 export const metadata: Metadata = {
   title: "The Farm",
   description:
-    "Discover life at Alban's Barnyard - a working farm in the Weald of Kent raising pedigree Jacob sheep and North Devon Red Ruby cattle.",
+    "Discover a farm stay in Kent at Alban's Barnyard. Pedigree Jacob sheep, North Devon Red Ruby cattle, and seasonal lambing experiences in the Weald of Kent.",
 };
 
 export default function TheFarmPage() {

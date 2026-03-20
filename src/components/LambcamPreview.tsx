@@ -42,7 +42,8 @@ export function LambcamPreview() {
               </h2>
               <p className="font-sans text-base text-white/70 leading-relaxed mb-8">
                 Watch our flock in real-time. During lambing season, you can
-                witness the arrival of new lambs from the comfort of your screen.
+                witness the arrival of new lambs from the comfort of your screen
+                &mdash; a true lambing experience from wherever you are.
                 Our Jacob sheep have been a beloved feature of the farm for
                 generations.
               </p>

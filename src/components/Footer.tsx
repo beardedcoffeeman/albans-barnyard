@@ -30,8 +30,8 @@ export function Footer() {
               Alban&apos;s Barnyard
             </h3>
             <p className="text-sm leading-relaxed text-white/60">
-              Luxury holiday accommodation on a working farm in the Weald of
-              Kent, just five miles from Tunbridge Wells.
+              A Weald of Kent cottage on a working farm, just five miles
+              from Tunbridge Wells. One of the finest places to stay in Kent.
             </p>
             <div className="mt-6 text-sm text-white/40">
               <p>Romford Road, Pembury</p>

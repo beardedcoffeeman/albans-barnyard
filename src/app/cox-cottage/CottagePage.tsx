@@ -76,7 +76,7 @@ const faqs = [
   },
   {
     q: "What day can we arrive?",
-    a: "Holidays can start on any day of the week, subject to availability. Minimum stay is typically 2 nights.",
+    a: "Kent cottage holidays at Cox Cottage can start on any day of the week, subject to availability. Minimum stay is typically 2 nights.",
   },
   {
     q: "How close is the nearest restaurant?",
@@ -84,7 +84,7 @@ const faqs = [
   },
   {
     q: "Can we visit the farm animals?",
-    a: "Absolutely! Guests are welcome to walk around the farm, see the sheep and cattle, and during lambing season, visit the lambing shed.",
+    a: "Absolutely! Guests are welcome to walk around the farm, see the sheep and cattle, and during lambing season, enjoy a hands-on lamb feeding experience in the lambing shed.",
   },
   {
     q: "Can we order farm produce?",
@@ -92,7 +92,7 @@ const faqs = [
   },
   {
     q: "How far is London?",
-    a: "London is approximately one hour by car or train. Tunbridge Wells station has regular services to London Bridge and Charing Cross.",
+    a: "London is approximately one hour by car or train, making us one of the most accessible luxury farm stays near London. Tunbridge Wells station has regular services to London Bridge and Charing Cross.",
   },
 ];
 
@@ -197,7 +197,7 @@ export function CottagePage() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-sans text-lg text-stone-600 leading-relaxed"
           >
-            A beautifully restored barn conversion with two spacious ensuite
+            A beautifully restored holiday cottage in Kent with two spacious ensuite
             bedrooms, an open-plan kitchen and living area with wood burning
             stove, and a private garden overlooking the farm. Designed with
             sustainability and luxury in equal measure.

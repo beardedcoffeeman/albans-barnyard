@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | Alban's Barnyard",
   },
   description:
-    "Escape to Cox Cottage, a beautifully restored luxury holiday cottage on a working farm in Pembury, Kent. Experience lambing season, artisan produce, and the tranquillity of the Kentish countryside.",
+    "One of the finest luxury farm stays near London. Cox Cottage is a beautifully restored holiday cottage in Kent on a working farm with artisan produce.",
   keywords: [
     "luxury farm stay Kent",
     "holiday cottage Tunbridge Wells",

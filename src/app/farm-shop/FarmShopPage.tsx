@@ -94,9 +94,11 @@ export function FarmShopPage() {
       <section className="py-20 bg-white">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <p className="font-sans text-lg text-stone-600 leading-relaxed">
-            Everything we sell comes directly from the farm. Our sheepskins are
-            from our own Jacob flock, our honey from our own hives, and our meat
-            from animals born and raised right here in the Kentish Weald.
+            Everything we sell comes directly from the farm &mdash; available to
+            order online or collect during your cottage holiday in Kent. Our
+            sheepskins are from our own Jacob flock, our honey from our own
+            hives, and our meat from animals born and raised right here in the
+            Kentish Weald.
           </p>
         </div>
       </section>

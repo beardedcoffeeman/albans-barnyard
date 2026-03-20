@@ -45,8 +45,8 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="font-sans text-base md:text-lg text-white/80 max-w-xl mx-auto mb-10 leading-relaxed"
         >
-          Luxurious holiday accommodation on a working farm, nestled in the
-          rolling countryside five miles from Tunbridge Wells.
+          A luxury farm stay in Kent, nestled in rolling countryside
+          five miles from Tunbridge Wells.
         </motion.p>
 
         <motion.div

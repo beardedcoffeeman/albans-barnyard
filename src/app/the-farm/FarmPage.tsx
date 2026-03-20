@@ -9,7 +9,7 @@ const seasons = [
   {
     name: "Spring",
     description:
-      "Lambing season is the highlight of the year. Watch newborn lambs take their first steps, visit the lambing shed, and experience the farm coming alive after winter.",
+      "Lambing season is the highlight of the year. Watch newborn lambs take their first steps, enjoy a lambing experience in the shed, and feel the farm coming alive after winter.",
     image: "/images/farm/sheep-1.jpg",
   },
   {
@@ -242,7 +242,7 @@ export function FarmPage() {
             Experience the Farm First-Hand
           </h2>
           <p className="font-sans text-white/60 mb-8">
-            Book a stay at Cox Cottage and explore the farm at your leisure.
+            Book a stay at our cottage near Tunbridge Wells and explore the farm at your leisure.
           </p>
           <Link
             href="/cox-cottage#booking"

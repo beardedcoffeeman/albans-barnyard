@@ -4,7 +4,7 @@ import { FarmShopPage } from "./FarmShopPage";
 export const metadata: Metadata = {
   title: "Farm Shop",
   description:
-    "Shop artisan farm produce from Alban's Barnyard - Jacob sheepskin rugs, pure honey, rare breed meat boxes, and handmade cushions.",
+    "Artisan produce from our Kent farm. Jacob sheepskin rugs, pure honey, and rare breed meat boxes, available to order or collect during your cottage holiday.",
 };
 
 export default function FarmShop() {

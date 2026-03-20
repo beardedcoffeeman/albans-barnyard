@@ -203,7 +203,8 @@ export function LambcamFullPage() {
               </h3>
               <p className="font-sans text-sm text-stone-600 leading-relaxed">
                 Lambing typically runs from late February through March. During
-                this time, the cameras are active around the clock. You might
+                this time, the cameras are active around the clock &mdash; offering
+                a live lambing experience from wherever you are. You might
                 see ewes being brought in, lambs being born, and their first
                 wobbly steps.
               </p>
@@ -213,9 +214,9 @@ export function LambcamFullPage() {
                 Visit in Person
               </h3>
               <p className="font-sans text-sm text-stone-600 leading-relaxed">
-                Guests staying at Cox Cottage can visit the lambing shed in
-                person during their stay. There&apos;s nothing quite like
-                meeting a newborn lamb up close.
+                Guests staying at Cox Cottage can visit the lambing shed and
+                enjoy a lamb feeding experience during their stay. There&apos;s
+                nothing quite like meeting a newborn lamb up close.
               </p>
             </div>
           </div>
