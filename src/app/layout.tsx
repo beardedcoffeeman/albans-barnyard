@@ -8,8 +8,6 @@ import Script from "next/script";
 import { getSettings } from "@/lib/settingsStore";
 import { getSection } from "@/lib/contentStore";
 
-export const dynamic = "force-dynamic";
-
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
