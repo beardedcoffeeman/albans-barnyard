@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAvailability, addAvailableDates, removeAvailableDates } from "@/lib/bookingStore";
 import { isAuthorized, unauthorizedResponse } from "@/lib/adminAuth";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const dates = await getAvailability();
   const today = new Date().toISOString().split("T")[0];
