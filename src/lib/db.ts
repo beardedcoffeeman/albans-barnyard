@@ -1,35 +1,34 @@
 /**
  * Database abstraction layer.
- * Uses Upstash Redis when REDIS_URL is available, falls back to filesystem for local dev.
+ * Uses Upstash Redis (REST) when KV_REST_API_URL is available,
+ * standard Redis (ioredis) when REDIS_URL is available,
+ * falls back to filesystem for local dev.
  */
 
-import { Redis } from "@upstash/redis";
+import { Redis as UpstashRedis } from "@upstash/redis";
+import IORedis from "ioredis";
 
-let redis: Redis | null = null;
+let upstashRedis: UpstashRedis | null = null;
+let ioRedis: IORedis | null = null;
 
-function getRedis(): Redis | null {
-  if (redis) return redis;
+function getUpstashRedis(): UpstashRedis | null {
+  if (upstashRedis) return upstashRedis;
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  // Also try REDIS_URL format (upstash:// protocol)
-  const redisUrl = process.env.REDIS_URL;
 
   if (url && token) {
-    redis = new Redis({ url, token });
-    return redis;
+    upstashRedis = new UpstashRedis({ url, token });
+    return upstashRedis;
   }
-  if (redisUrl && redisUrl.startsWith("rediss://")) {
-    // Parse Upstash Redis URL
-    try {
-      const parsed = new URL(redisUrl);
-      redis = new Redis({
-        url: `https://${parsed.hostname}`,
-        token: parsed.password,
-      });
-      return redis;
-    } catch {
-      return null;
-    }
+  return null;
+}
+
+function getIORedis(): IORedis | null {
+  if (ioRedis) return ioRedis;
+  const redisUrl = process.env.REDIS_URL;
+  if (redisUrl && (redisUrl.startsWith("redis://") || redisUrl.startsWith("rediss://"))) {
+    ioRedis = new IORedis(redisUrl, { lazyConnect: false, maxRetriesPerRequest: 1 });
+    return ioRedis;
   }
   return null;
 }
@@ -42,11 +41,24 @@ async function getFs() {
 }
 
 export async function dbGet<T>(key: string, fallback: T): Promise<T> {
-  const r = getRedis();
-  if (r) {
+  // Try Upstash first
+  const upstash = getUpstashRedis();
+  if (upstash) {
     try {
-      const data = await r.get<T>(key);
+      const data = await upstash.get<T>(key);
       return data ?? fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  // Try standard Redis
+  const io = getIORedis();
+  if (io) {
+    try {
+      const raw = await io.get(key);
+      if (raw) return JSON.parse(raw) as T;
+      return fallback;
     } catch {
       return fallback;
     }
@@ -64,9 +76,17 @@ export async function dbGet<T>(key: string, fallback: T): Promise<T> {
 }
 
 export async function dbSet<T>(key: string, data: T): Promise<void> {
-  const r = getRedis();
-  if (r) {
-    await r.set(key, data);
+  // Try Upstash first
+  const upstash = getUpstashRedis();
+  if (upstash) {
+    await upstash.set(key, data);
+    return;
+  }
+
+  // Try standard Redis
+  const io = getIORedis();
+  if (io) {
+    await io.set(key, JSON.stringify(data));
     return;
   }
 
