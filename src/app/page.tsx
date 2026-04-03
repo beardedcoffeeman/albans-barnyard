@@ -19,6 +19,11 @@ export default async function Home() {
   const section = (id: string) =>
     content.sections.find((s) => s.id === id)?.fields ?? {};
 
+  // Content store is the source of truth for lambcam toggles
+  const lambcamFields = section("lambcam");
+  settings.lambcamEnabled = lambcamFields.enabled !== false;
+  settings.lambcamMenuVisible = lambcamFields.showInMenu !== false;
+
   return (
     <>
       <Hero content={section("hero")} />

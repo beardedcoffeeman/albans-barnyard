@@ -14,6 +14,12 @@ export default async function LambcamPage() {
     getSettings(),
     getSection("lambcam"),
   ]);
+
+  // Content store is the source of truth for lambcam toggles
+  if (lambcamSection?.fields) {
+    settings.lambcamEnabled = lambcamSection.fields.enabled !== false;
+  }
+
   return (
     <LambcamFullPage
       settings={settings}

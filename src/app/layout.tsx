@@ -110,11 +110,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [settings, navSection, footerSection] = await Promise.all([
+  const [settings, navSection, footerSection, lambcamSection] = await Promise.all([
     getSettings(),
     getSection("navigation"),
     getSection("footer"),
+    getSection("lambcam"),
   ]);
+
+  // Content store is the source of truth for lambcam toggles
+  if (lambcamSection?.fields) {
+    settings.lambcamEnabled = lambcamSection.fields.enabled !== false;
+    settings.lambcamMenuVisible = lambcamSection.fields.showInMenu !== false;
+  }
 
   return (
     <html
