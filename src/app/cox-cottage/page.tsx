@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { CottagePage } from "./CottagePage";
 import { getContent } from "@/lib/contentStore";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Cox Cottage",
   description:

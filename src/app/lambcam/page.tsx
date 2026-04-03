@@ -3,6 +3,8 @@ import { LambcamFullPage } from "./LambcamFullPage";
 import { getSection } from "@/lib/contentStore";
 import { getSettings } from "@/lib/settingsStore";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Lambcam",
   description:

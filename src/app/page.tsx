@@ -10,6 +10,8 @@ import { FacebookSection } from "@/components/FacebookSection";
 import { getContent } from "@/lib/contentStore";
 import { getSettings } from "@/lib/settingsStore";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const [content, settings] = await Promise.all([
     getContent(),

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { FarmShopPage } from "./FarmShopPage";
 import { getSection } from "@/lib/contentStore";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Farm Shop",
   description:
