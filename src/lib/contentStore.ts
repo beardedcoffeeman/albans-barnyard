@@ -333,6 +333,13 @@ export async function getContent(): Promise<SiteContent> {
     await dbSet("content", defaultContent);
     return defaultContent;
   }
+  // Merge in any new default sections that don't exist in stored data
+  const existingIds = new Set(content.sections.map((s) => s.id));
+  const missing = defaultContent.sections.filter((s) => !existingIds.has(s.id));
+  if (missing.length > 0) {
+    content.sections.push(...missing);
+    await dbSet("content", content);
+  }
   return content;
 }
 
