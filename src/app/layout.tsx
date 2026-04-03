@@ -5,6 +5,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import Script from "next/script";
+import { getSettings } from "@/lib/settingsStore";
+import { getSection } from "@/lib/contentStore";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -103,11 +105,17 @@ const jsonLd = {
   petsAllowed: false,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [settings, navSection, footerSection] = await Promise.all([
+    getSettings(),
+    getSection("navigation"),
+    getSection("footer"),
+  ]);
+
   return (
     <html
       lang="en"
@@ -122,9 +130,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <AnalyticsTracker />
-        <Navigation />
+        <Navigation settings={settings} content={navSection?.fields} />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer settings={settings} content={footerSection?.fields} />
       </body>
     </html>
   );

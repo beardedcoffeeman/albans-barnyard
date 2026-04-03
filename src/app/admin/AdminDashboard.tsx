@@ -24,11 +24,6 @@ interface BookingRequest {
   createdAt: string;
 }
 
-interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
-
 interface MediaFile {
   name: string;
   url: string;
@@ -47,19 +42,13 @@ interface AnalyticsSummary {
 
 export function AdminDashboard({ token }: { token: string }) {
   const authHeaders = { Authorization: `Bearer ${token}` };
-  const [tab, setTab] = useState<"chat" | "pages" | "media" | "bookings" | "analytics">("chat");
+  const [tab, setTab] = useState<"pages" | "media" | "bookings" | "analytics">("pages");
   const [sections, setSections] = useState<PageSection[]>([]);
   const [bookings, setBookings] = useState<BookingRequest[]>([]);
   const [media, setMedia] = useState<MediaFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
 
-  // Chat state
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [chatInput, setChatInput] = useState("");
-  const [chatLoading, setChatLoading] = useState(false);
-  const chatEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = useCallback(async () => {
@@ -95,44 +84,6 @@ export function AdminDashboard({ token }: { token: string }) {
     fetchAnalytics();
   }, [fetchData, fetchMedia, fetchAnalytics]);
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatMessages]);
-
-  // Chat
-  const sendMessage = async (overrideMsg?: string) => {
-    const msg = overrideMsg || chatInput.trim();
-    if (!msg || chatLoading) return;
-    setChatInput("");
-    setChatMessages((prev) => [...prev, { role: "user", content: msg }]);
-    setChatLoading(true);
-
-    try {
-      const apiMessages = [
-        ...chatMessages.map((m) => ({ role: m.role, content: m.content })),
-        { role: "user" as const, content: msg },
-      ];
-      const res = await fetch("/api/admin/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", ...authHeaders },
-        body: JSON.stringify({ messages: apiMessages }),
-      });
-      const data = await res.json();
-      setChatMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.error ? `Error: ${data.error}` : data.message },
-      ]);
-      fetchData();
-    } catch {
-      setChatMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "Sorry, I couldn't connect. Please try again." },
-      ]);
-    }
-    setChatLoading(false);
-    inputRef.current?.focus();
-  };
-
   // Upload
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -159,17 +110,7 @@ export function AdminDashboard({ token }: { token: string }) {
 
   const pendingCount = bookings.filter((b) => b.status === "pending").length;
 
-  const quickPrompts = [
-    "Show me all pending bookings",
-    "Make the whole of May available at £160/night",
-    "Turn off the lambcam for the summer",
-    "Change the seasonal banner to summer theme",
-    "What are the current site settings?",
-    "Show me all the editable sections",
-  ];
-
   const tabs = [
-    { id: "chat" as const, label: "Assistant", icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" },
     { id: "pages" as const, label: "Pages", icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" },
     { id: "media" as const, label: "Media", icon: "M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" },
     { id: "bookings" as const, label: "Bookings", icon: "M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" },
@@ -215,111 +156,6 @@ export function AdminDashboard({ token }: { token: string }) {
         ))}
       </div>
 
-      {/* ===== CHAT ===== */}
-      {tab === "chat" && (
-        <div className="bg-white rounded-2xl shadow-sm border border-stone-200/60 overflow-hidden flex flex-col" style={{ height: "calc(100vh - 220px)" }}>
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
-            {chatMessages.length === 0 && (
-              <div className="flex flex-col items-center justify-center h-full text-center px-4">
-                <div className="w-16 h-16 rounded-2xl bg-green-dark/10 flex items-center justify-center mb-4">
-                  <svg className="w-8 h-8 text-green-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                  </svg>
-                </div>
-                <h3 className="font-serif text-xl text-stone-900 mb-2">Hi Simon! How can I help?</h3>
-                <p className="font-sans text-sm text-stone-400 max-w-md mb-8">
-                  I can manage your bookings, update the website content, change what&apos;s shown on each page, toggle the lambcam, and more. Just ask!
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg">
-                  {quickPrompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      onClick={() => sendMessage(prompt)}
-                      className="text-left px-4 py-3 rounded-xl border border-stone-200 font-sans text-sm text-stone-600 hover:border-green-dark hover:text-green-dark transition-colors"
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {chatMessages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] rounded-2xl px-5 py-3 ${
-                  msg.role === "user" ? "bg-green-dark text-white rounded-br-md" : "bg-stone-100 text-stone-800 rounded-bl-md"
-                }`}>
-                  {msg.role === "assistant" && (
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <div className="w-5 h-5 rounded-full bg-green-dark flex items-center justify-center">
-                        <span className="text-white text-[10px] font-bold">A</span>
-                      </div>
-                      <span className="font-sans text-xs font-medium text-stone-500">Assistant</span>
-                    </div>
-                  )}
-                  <p className="font-sans text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-                </div>
-              </div>
-            ))}
-            {chatLoading && (
-              <div className="flex justify-start">
-                <div className="bg-stone-100 rounded-2xl rounded-bl-md px-5 py-4">
-                  <div className="flex gap-1.5">
-                    <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                  </div>
-                </div>
-              </div>
-            )}
-            <div ref={chatEndRef} />
-          </div>
-
-          <div className="border-t border-stone-100 p-4">
-            <div className="flex gap-2">
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="p-3.5 bg-stone-50 rounded-xl text-stone-400 hover:text-green-dark hover:bg-stone-100 transition-colors"
-                title="Upload image or video"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
-                </svg>
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*,video/*"
-                multiple
-                className="hidden"
-                onChange={async (e) => {
-                  await handleUpload(e);
-                  sendMessage("I just uploaded some new files. They're now in the media library.");
-                }}
-              />
-              <input
-                ref={inputRef}
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                placeholder="Tell me what you'd like to change..."
-                className="flex-1 px-5 py-3.5 bg-stone-50 rounded-xl font-sans text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-green-dark/20 focus:bg-white transition-all"
-              />
-              <button
-                onClick={() => sendMessage()}
-                disabled={chatLoading || !chatInput.trim()}
-                className="px-5 py-3.5 bg-green-dark text-white rounded-xl hover:bg-green-mid transition-colors disabled:opacity-40"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ===== PAGES (Visual Editor) ===== */}
       {tab === "pages" && <VisualEditor token={token} />}
 
@@ -334,7 +170,7 @@ export function AdminDashboard({ token }: { token: string }) {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*,video/*"
+              accept="image/*,video/*,application/pdf,.pdf"
               multiple
               className="hidden"
               onChange={handleUpload}
@@ -343,9 +179,9 @@ export function AdminDashboard({ token }: { token: string }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
             </svg>
             <p className="font-sans text-sm text-stone-500 mb-1">
-              {uploading ? "Uploading..." : "Click to upload images or videos"}
+              {uploading ? "Uploading..." : "Click to upload images, videos, or PDFs"}
             </p>
-            <p className="font-sans text-xs text-stone-400">JPG, PNG, WebP, MP4, MOV</p>
+            <p className="font-sans text-xs text-stone-400">JPG, PNG, WebP, MP4, MOV, PDF</p>
           </div>
 
           {/* Media grid */}

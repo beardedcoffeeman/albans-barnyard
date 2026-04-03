@@ -4,33 +4,12 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ContentFields } from "@/lib/getSiteData";
 
-const seasons = [
-  {
-    name: "Spring",
-    description:
-      "Lambing season is the highlight of the year. Watch newborn lambs take their first steps, enjoy a lambing experience in the shed, and feel the farm coming alive after winter.",
-    image: "/images/farm/sheep-1.jpg",
-  },
-  {
-    name: "Summer",
-    description:
-      "The hives are buzzing, the orchards are heavy with fruit, and the cattle graze contentedly in lush pastures. Our honey harvest takes place in late summer.",
-    image: "/images/farm/flock-summer.jpg",
-  },
-  {
-    name: "Autumn",
-    description:
-      "The farm takes on golden hues as the orchards turn. It's tupping time for the sheep, and we prepare our seasonal meat boxes from our rare breed livestock.",
-    image: "/images/farm/countryside.jpg",
-  },
-  {
-    name: "Winter",
-    description:
-      "A magical time to visit. Crisp mornings, frosty fields, and the warmth of the wood burner waiting for you back at the cottage. The farm's robin is always a welcome visitor.",
-    image: "/images/farm/landscape-main.jpg",
-  },
-];
+interface FarmPageProps {
+  intro: ContentFields;
+  seasons: ContentFields;
+}
 
 const farmGallery = [
   { src: "/images/farm/ewe-and-lamb.jpg", alt: "Jacob ewe and lamb in summer meadow" },
@@ -47,13 +26,43 @@ const farmGallery = [
   { src: "/images/farm/sunset-tractor.jpg", alt: "Hay baling at golden hour" },
 ];
 
-export function FarmPage() {
+export function FarmPage({ intro, seasons: seasonsContent }: FarmPageProps) {
   const introRef = useRef(null);
   const seasonsRef = useRef(null);
   const galleryRef = useRef(null);
   const introInView = useInView(introRef, { once: true, margin: "-100px" });
   const seasonsInView = useInView(seasonsRef, { once: true, margin: "-100px" });
   const galleryInView = useInView(galleryRef, { once: true, margin: "-100px" });
+
+  const eyebrow = String(intro.eyebrow ?? "Our Heritage");
+  const title = String(intro.title ?? "Traditional Breeds,");
+  const titleLine2 = String(intro.titleLine2 ?? "Modern Values");
+  const paragraph1 = String(intro.paragraph1 ?? "Albans Barnyard is a small family farm nestled in the Kentish Weald, where we raise pedigree Jacob sheep and North Devon Red Ruby cattle using traditional, high-welfare methods.");
+  const paragraph2 = String(intro.paragraph2 ?? "Our Jacob sheep are a beautiful four-horned British breed with distinctive spotted fleeces. The flock has been carefully bred over many years, producing characterful lambs that visitors fall in love with each spring.");
+  const paragraph3 = String(intro.paragraph3 ?? "The North Devon Red Ruby cattle are one of Britain\u2019s oldest native breeds, known for their rich, well-marbled beef. They thrive on our natural pastures, supplemented only with our own hay and silage.");
+
+  const seasons = [
+    {
+      name: "Spring",
+      description: String(seasonsContent.springDescription ?? "Lambing season is the highlight of the year. Watch newborn lambs take their first steps, enjoy a lambing experience in the shed, and feel the farm coming alive after winter."),
+      image: "/images/farm/sheep-1.jpg",
+    },
+    {
+      name: "Summer",
+      description: String(seasonsContent.summerDescription ?? "The hives are buzzing, the orchards are heavy with fruit, and the cattle graze contentedly in lush pastures. Our honey harvest takes place in late summer."),
+      image: "/images/farm/flock-summer.jpg",
+    },
+    {
+      name: "Autumn",
+      description: String(seasonsContent.autumnDescription ?? "The farm takes on golden hues as the orchards turn. It\u2019s tupping time for the sheep, and we prepare our seasonal meat boxes from our rare breed livestock."),
+      image: "/images/farm/countryside.jpg",
+    },
+    {
+      name: "Winter",
+      description: String(seasonsContent.winterDescription ?? "A magical time to visit. Crisp mornings, frosty fields, and the warmth of the wood burner waiting for you back at the cottage. The farm\u2019s robin is always a welcome visitor."),
+      image: "/images/farm/landscape-main.jpg",
+    },
+  ];
 
   return (
     <>
@@ -85,31 +94,17 @@ export function FarmPage() {
               transition={{ duration: 0.8 }}
             >
               <p className="font-sans text-xs tracking-[0.3em] uppercase text-green-mid mb-4">
-                Our Heritage
+                {eyebrow}
               </p>
               <h2 className="font-serif text-4xl md:text-5xl font-light text-stone-900 leading-tight mb-8">
-                Traditional Breeds,
+                {title}
                 <br />
-                <span className="italic">Modern Values</span>
+                <span className="italic">{titleLine2}</span>
               </h2>
               <div className="space-y-5 font-sans text-stone-600 leading-relaxed">
-                <p>
-                  Albans Barnyard is a small family farm nestled in the
-                  Kentish Weald, where we raise pedigree Jacob sheep and North
-                  Devon Red Ruby cattle using traditional, high-welfare methods.
-                </p>
-                <p>
-                  Our Jacob sheep are a beautiful four-horned British breed with
-                  distinctive spotted fleeces. The flock has been carefully
-                  bred over many years, producing characterful lambs that visitors
-                  fall in love with each spring.
-                </p>
-                <p>
-                  The North Devon Red Ruby cattle are one of Britain&apos;s
-                  oldest native breeds, known for their rich, well-marbled beef.
-                  They thrive on our natural pastures, supplemented only with
-                  our own hay and silage.
-                </p>
+                <p>{paragraph1}</p>
+                <p>{paragraph2}</p>
+                <p>{paragraph3}</p>
               </div>
             </motion.div>
             <motion.div
@@ -119,22 +114,10 @@ export function FarmPage() {
               className="grid grid-cols-2 gap-4"
             >
               <div className="relative aspect-[3/4] overflow-hidden">
-                <Image
-                  src="/images/farm/countryside.jpg"
-                  alt="Jacob sheep portrait"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
+                <Image src="/images/farm/countryside.jpg" alt="Jacob sheep portrait" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
               </div>
               <div className="relative aspect-[3/4] overflow-hidden mt-8">
-                <Image
-                  src="/images/farm/farm-exterior.jpg"
-                  alt="Red Ruby cattle"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
+                <Image src="/images/farm/farm-exterior.jpg" alt="Red Ruby cattle" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
               </div>
             </motion.div>
           </div>
@@ -170,13 +153,7 @@ export function FarmPage() {
                 }`}
               >
                 <div className={`relative aspect-[4/3] overflow-hidden ${i % 2 === 1 ? "lg:order-2" : ""}`}>
-                  <Image
-                    src={season.image}
-                    alt={season.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
+                  <Image src={season.image} alt={season.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
                 </div>
                 <div className={i % 2 === 1 ? "lg:order-1" : ""}>
                   <h3 className="font-serif text-3xl md:text-4xl text-stone-900 mb-4">
@@ -186,10 +163,7 @@ export function FarmPage() {
                     {season.description}
                   </p>
                   {season.name === "Spring" && (
-                    <Link
-                      href="/lambcam"
-                      className="inline-block px-8 py-3 bg-green-dark text-white font-sans text-sm tracking-[0.2em] uppercase hover:bg-green-mid transition-colors"
-                    >
+                    <Link href="/lambcam" className="inline-block px-8 py-3 bg-green-dark text-white font-sans text-sm tracking-[0.2em] uppercase hover:bg-green-mid transition-colors">
                       Watch the Lambcam
                     </Link>
                   )}
@@ -222,13 +196,7 @@ export function FarmPage() {
                   i === 0 || i === 5 ? "md:col-span-2 aspect-[2/1]" : "aspect-square"
                 }`}
               >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
+                <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               </motion.div>
             ))}
           </div>
@@ -244,10 +212,7 @@ export function FarmPage() {
           <p className="font-sans text-white/60 mb-8">
             Book a stay at our cottage near Tunbridge Wells and explore the farm at your leisure.
           </p>
-          <Link
-            href="/cox-cottage#booking"
-            className="inline-block px-10 py-4 bg-gold text-green-dark font-sans text-sm tracking-[0.2em] uppercase font-medium hover:bg-gold-light transition-colors"
-          >
+          <Link href="/cox-cottage#booking" className="inline-block px-10 py-4 bg-gold text-green-dark font-sans text-sm tracking-[0.2em] uppercase font-medium hover:bg-gold-light transition-colors">
             Book Your Stay
           </Link>
         </div>

@@ -1,15 +1,22 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
+import type { ContentFields } from "@/lib/getSiteData";
 
 interface AvailableDate {
   date: string;
   pricePerNight?: number;
 }
 
-const heroImage = "/images/cottage/cottages-05.jpg";
+interface CottagePageProps {
+  intro: ContentFields;
+  welcome: ContentFields;
+  faq: ContentFields;
+  amenities: ContentFields;
+  sustainability: ContentFields;
+}
 
 const galleryImages = [
   { src: "/images/cottage/cottages-07.jpg", alt: "Open plan living room" },
@@ -23,80 +30,7 @@ const galleryImages = [
   { src: "/images/cottage/cottages-04.jpg", alt: "View over the Weald of Kent" },
 ];
 
-const amenities = [
-  {
-    category: "Kitchen",
-    items: [
-      "Hand-built wooden kitchen",
-      "Granite worktops",
-      "Integrated Neff appliances",
-      "Full-size fridge freezer",
-      "Nespresso coffee machine",
-      "Dishwasher",
-    ],
-  },
-  {
-    category: "Living",
-    items: [
-      "Dijon limestone flooring",
-      "Charnwood wood burning stove",
-      "Underfloor heating throughout",
-      "Sonos audio system",
-      "Freesat TV & DVD collection",
-      "Wi-Fi & wired internet",
-    ],
-  },
-  {
-    category: "Bedrooms",
-    items: [
-      "Ground floor king bed (converts to twin)",
-      "Ensuite shower room",
-      "Upper floor double bed",
-      "Juliet balcony",
-      "Ensuite with shower-over-bath",
-      "Premium bed linen & towels",
-    ],
-  },
-  {
-    category: "Outdoor",
-    items: [
-      "Private rear garden",
-      "Patio with outdoor seating",
-      "Parking for two cars",
-      "Farm walks on the doorstep",
-      "BBQ available on request",
-    ],
-  },
-];
-
-const faqs = [
-  {
-    q: "Are pets welcome?",
-    a: "We're sorry but we are unable to accommodate pets at Cox Cottage to keep it allergy-free for all guests.",
-  },
-  {
-    q: "What day can we arrive?",
-    a: "Kent cottage holidays at Cox Cottage can start on any day of the week, subject to availability. Minimum stay is typically 2 nights.",
-  },
-  {
-    q: "How close is the nearest restaurant?",
-    a: "The Poet at Matfield is a lovely gastropub just a 5-minute drive away. Tunbridge Wells has a wide range of restaurants 15 minutes away.",
-  },
-  {
-    q: "Can we visit the farm animals?",
-    a: "Absolutely! Guests are welcome to walk around the farm, see the sheep and cattle, and during lambing season, enjoy a hands-on lamb feeding experience in the lambing shed.",
-  },
-  {
-    q: "Can we order farm produce?",
-    a: "Yes, our honey, sheepskins and meat boxes can be ordered in advance of your stay or from our farm shop page.",
-  },
-  {
-    q: "How far is London?",
-    a: "London is approximately one hour by car or train, making us one of the most accessible luxury farm stays near London. Tunbridge Wells station has regular services to London Bridge and Charing Cross.",
-  },
-];
-
-export function CottagePage() {
+export function CottagePage({ intro, welcome, faq, amenities, sustainability }: CottagePageProps) {
   const galleryRef = useRef(null);
   const amenitiesRef = useRef(null);
   const faqRef = useRef(null);
@@ -119,6 +53,73 @@ export function CottagePage() {
   >("idle");
   const [bookingError, setBookingError] = useState("");
   const [calMonth, setCalMonth] = useState(new Date());
+
+  // Content fields
+  const heroImage = String(intro.heroImage ?? "/images/cottage/cottages-05.jpg");
+  const introTitle = String(intro.title ?? "Cox Cottage");
+  const introDescription = String(intro.description ?? "A beautifully restored holiday cottage in Kent with two spacious ensuite bedrooms, an open-plan kitchen and living area with wood burning stove, and a private garden overlooking the farm. Designed with sustainability and luxury in equal measure.");
+
+  const welcomeEyebrow = String(welcome.eyebrow ?? "A Warm Welcome");
+  const welcomeTitle = String(welcome.title ?? "The Little Touches");
+  const welcomeTitleLine2 = String(welcome.titleLine2 ?? "That Matter");
+  const welcomeDescription = String(welcome.description ?? "Every stay begins with a welcome hamper of farm produce: freshly laid eggs, our own honey, homemade cake, and a selection of local treats. It\u2019s our way of saying welcome to the farm.");
+  const welcomeImage = String(welcome.image ?? "/images/cottage/welcome-hamper.png");
+
+  const sustainabilityItems = [
+    {
+      icon: "sun",
+      title: String(sustainability.feature1Title ?? "Solar Powered"),
+      text: String(sustainability.feature1Text ?? "Roof-mounted solar panels generate renewable energy"),
+    },
+    {
+      icon: "earth",
+      title: String(sustainability.feature2Title ?? "Ground Source Heat"),
+      text: String(sustainability.feature2Text ?? "Geothermal heat pump for efficient underfloor heating"),
+    },
+    {
+      icon: "wind",
+      title: String(sustainability.feature3Title ?? "Heat Recovery"),
+      text: String(sustainability.feature3Text ?? "Mechanical ventilation with heat recovery system"),
+    },
+  ];
+
+  const amenityGroups = useMemo(() => [
+    {
+      category: String(amenities.kitchenTitle ?? "Kitchen"),
+      items: String(amenities.kitchenItems ?? "Hand-built wooden kitchen|Granite worktops|Integrated Neff appliances|Full-size fridge freezer|Nespresso coffee machine|Dishwasher").split("|"),
+    },
+    {
+      category: String(amenities.livingTitle ?? "Living"),
+      items: String(amenities.livingItems ?? "Dijon limestone flooring|Charnwood wood burning stove|Underfloor heating throughout|Sonos audio system|Freesat TV & DVD collection|Wi-Fi & wired internet").split("|"),
+    },
+    {
+      category: String(amenities.bedroomsTitle ?? "Bedrooms"),
+      items: String(amenities.bedroomsItems ?? "Ground floor king bed (converts to twin)|Ensuite shower room|Upper floor double bed|Juliet balcony|Ensuite with shower-over-bath|Premium bed linen & towels").split("|"),
+    },
+    {
+      category: String(amenities.outdoorTitle ?? "Outdoor"),
+      items: String(amenities.outdoorItems ?? "Private rear garden|Patio with outdoor seating|Parking for two cars|Farm walks on the doorstep|BBQ available on request").split("|"),
+    },
+  ], [amenities]);
+
+  const faqs = useMemo(() => {
+    const items = [];
+    for (let i = 1; i <= 6; i++) {
+      const q = faq[`faq${i}Q`];
+      const a = faq[`faq${i}A`];
+      if (q && a) items.push({ q: String(q), a: String(a) });
+    }
+    return items.length > 0
+      ? items
+      : [
+          { q: "Are pets welcome?", a: "We're sorry but we are unable to accommodate pets at Cox Cottage to keep it allergy-free for all guests." },
+          { q: "What day can we arrive?", a: "Kent cottage holidays at Cox Cottage can start on any day of the week, subject to availability. Minimum stay is typically 2 nights." },
+          { q: "How close is the nearest restaurant?", a: "The Poet at Matfield is a lovely gastropub just a 5-minute drive away. Tunbridge Wells has a wide range of restaurants 15 minutes away." },
+          { q: "Can we visit the farm animals?", a: "Absolutely! Guests are welcome to walk around the farm, see the sheep and cattle, and during lambing season, enjoy a hands-on lamb feeding experience in the lambing shed." },
+          { q: "Can we order farm produce?", a: "Yes, our honey, sheepskins and meat boxes can be ordered in advance of your stay or from our farm shop page." },
+          { q: "How far is London?", a: "London is approximately one hour by car or train, making us one of the most accessible luxury farm stays near London. Tunbridge Wells station has regular services to London Bridge and Charing Cross." },
+        ];
+  }, [faq]);
 
   const fetchAvailability = useCallback(async () => {
     try {
@@ -189,7 +190,7 @@ export function CottagePage() {
             transition={{ duration: 0.8 }}
             className="font-serif text-5xl md:text-6xl font-light text-stone-900 mb-6"
           >
-            Cox Cottage
+            {introTitle}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -197,10 +198,7 @@ export function CottagePage() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-sans text-lg text-stone-600 leading-relaxed"
           >
-            A beautifully restored holiday cottage in Kent with two spacious ensuite
-            bedrooms, an open-plan kitchen and living area with wood burning
-            stove, and a private garden overlooking the farm. Designed with
-            sustainability and luxury in equal measure.
+            {introDescription}
           </motion.p>
         </div>
       </section>
@@ -211,7 +209,7 @@ export function CottagePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
               <Image
-                src="/images/cottage/welcome-hamper.png"
+                src={welcomeImage}
                 alt="Welcome hamper with eggs, honey, cake and local produce"
                 fill
                 className="object-cover"
@@ -220,15 +218,13 @@ export function CottagePage() {
             </div>
             <div>
               <p className="font-sans text-xs tracking-[0.3em] uppercase text-green-mid mb-4">
-                A Warm Welcome
+                {welcomeEyebrow}
               </p>
               <h2 className="font-serif text-3xl md:text-4xl font-light text-stone-900 mb-6">
-                The Little Touches <span className="italic">That Matter</span>
+                {welcomeTitle} <span className="italic">{welcomeTitleLine2}</span>
               </h2>
               <p className="font-sans text-stone-600 leading-relaxed">
-                Every stay begins with a welcome hamper of farm produce:
-                freshly laid eggs, our own honey, homemade cake, and a selection
-                of local treats. It&apos;s our way of saying welcome to the farm.
+                {welcomeDescription}
               </p>
             </div>
           </div>
@@ -239,23 +235,7 @@ export function CottagePage() {
       <section className="py-16 bg-green-dark">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            {[
-              {
-                icon: "sun",
-                title: "Solar Powered",
-                text: "Roof-mounted solar panels generate renewable energy",
-              },
-              {
-                icon: "earth",
-                title: "Ground Source Heat",
-                text: "Geothermal heat pump for efficient underfloor heating",
-              },
-              {
-                icon: "wind",
-                title: "Heat Recovery",
-                text: "Mechanical ventilation with heat recovery system",
-              },
-            ].map((item) => (
+            {sustainabilityItems.map((item) => (
               <div key={item.title}>
                 <div className="w-10 h-10 mx-auto mb-3 text-gold">
                   <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -325,7 +305,7 @@ export function CottagePage() {
             Amenities
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-            {amenities.map((group, i) => (
+            {amenityGroups.map((group, i) => (
               <motion.div
                 key={group.category}
                 initial={{ opacity: 0, y: 20 }}
@@ -519,100 +499,34 @@ export function CottagePage() {
               ) : (
                 <form onSubmit={handleBookingSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your name *"
-                      value={bookingForm.name}
-                      onChange={(e) =>
-                        setBookingForm((f) => ({ ...f, name: e.target.value }))
-                      }
-                      className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors"
-                    />
-                    <input
-                      type="email"
-                      required
-                      placeholder="Email address *"
-                      value={bookingForm.email}
-                      onChange={(e) =>
-                        setBookingForm((f) => ({ ...f, email: e.target.value }))
-                      }
-                      className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors"
-                    />
+                    <input type="text" required placeholder="Your name *" value={bookingForm.name} onChange={(e) => setBookingForm((f) => ({ ...f, name: e.target.value }))} className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors" />
+                    <input type="email" required placeholder="Email address *" value={bookingForm.email} onChange={(e) => setBookingForm((f) => ({ ...f, email: e.target.value }))} className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors" />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs text-white/40 mb-1 font-sans">
-                        Check-in *
-                      </label>
-                      <input
-                        type="date"
-                        required
-                        value={bookingForm.checkIn}
-                        onChange={(e) =>
-                          setBookingForm((f) => ({ ...f, checkIn: e.target.value }))
-                        }
-                        className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white font-sans text-sm focus:outline-none focus:border-gold transition-colors [color-scheme:dark]"
-                      />
+                      <label className="block text-xs text-white/40 mb-1 font-sans">Check-in *</label>
+                      <input type="date" required value={bookingForm.checkIn} onChange={(e) => setBookingForm((f) => ({ ...f, checkIn: e.target.value }))} className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white font-sans text-sm focus:outline-none focus:border-gold transition-colors [color-scheme:dark]" />
                     </div>
                     <div>
-                      <label className="block text-xs text-white/40 mb-1 font-sans">
-                        Check-out *
-                      </label>
-                      <input
-                        type="date"
-                        required
-                        value={bookingForm.checkOut}
-                        onChange={(e) =>
-                          setBookingForm((f) => ({ ...f, checkOut: e.target.value }))
-                        }
-                        className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white font-sans text-sm focus:outline-none focus:border-gold transition-colors [color-scheme:dark]"
-                      />
+                      <label className="block text-xs text-white/40 mb-1 font-sans">Check-out *</label>
+                      <input type="date" required value={bookingForm.checkOut} onChange={(e) => setBookingForm((f) => ({ ...f, checkOut: e.target.value }))} className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white font-sans text-sm focus:outline-none focus:border-gold transition-colors [color-scheme:dark]" />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <select
-                      value={bookingForm.guests}
-                      onChange={(e) =>
-                        setBookingForm((f) => ({ ...f, guests: e.target.value }))
-                      }
-                      className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white font-sans text-sm focus:outline-none focus:border-gold transition-colors appearance-none"
-                    >
+                    <select value={bookingForm.guests} onChange={(e) => setBookingForm((f) => ({ ...f, guests: e.target.value }))} className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white font-sans text-sm focus:outline-none focus:border-gold transition-colors appearance-none">
                       <option value="1">1 Guest</option>
                       <option value="2">2 Guests</option>
                       <option value="3">3 Guests</option>
                       <option value="4">4 Guests</option>
                     </select>
-                    <input
-                      type="tel"
-                      placeholder="Phone number"
-                      value={bookingForm.phone}
-                      onChange={(e) =>
-                        setBookingForm((f) => ({ ...f, phone: e.target.value }))
-                      }
-                      className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors"
-                    />
+                    <input type="tel" placeholder="Phone number" value={bookingForm.phone} onChange={(e) => setBookingForm((f) => ({ ...f, phone: e.target.value }))} className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors" />
                   </div>
-                  <textarea
-                    placeholder="Any special requests..."
-                    rows={3}
-                    value={bookingForm.message}
-                    onChange={(e) =>
-                      setBookingForm((f) => ({ ...f, message: e.target.value }))
-                    }
-                    className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors resize-none"
-                  />
+                  <textarea placeholder="Any special requests..." rows={3} value={bookingForm.message} onChange={(e) => setBookingForm((f) => ({ ...f, message: e.target.value }))} className="w-full px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-gold transition-colors resize-none" />
                   {bookingError && (
                     <p className="font-sans text-sm text-red-400">{bookingError}</p>
                   )}
-                  <button
-                    type="submit"
-                    disabled={bookingStatus === "submitting"}
-                    className="w-full sm:w-auto px-12 py-4 bg-gold text-green-dark font-sans text-sm tracking-[0.2em] uppercase font-medium hover:bg-gold-light transition-colors duration-300 disabled:opacity-50"
-                  >
-                    {bookingStatus === "submitting"
-                      ? "Submitting..."
-                      : "Request Booking"}
+                  <button type="submit" disabled={bookingStatus === "submitting"} className="w-full sm:w-auto px-12 py-4 bg-gold text-green-dark font-sans text-sm tracking-[0.2em] uppercase font-medium hover:bg-gold-light transition-colors duration-300 disabled:opacity-50">
+                    {bookingStatus === "submitting" ? "Submitting..." : "Request Booking"}
                   </button>
                 </form>
               )}
@@ -633,7 +547,7 @@ export function CottagePage() {
             Frequently Asked
           </motion.h2>
           <div className="space-y-0">
-            {faqs.map((faq, i) => (
+            {faqs.map((faqItem, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
@@ -646,7 +560,7 @@ export function CottagePage() {
                   className="w-full flex items-center justify-between py-6 text-left"
                 >
                   <span className="font-serif text-xl text-stone-900 pr-8">
-                    {faq.q}
+                    {faqItem.q}
                   </span>
                   <span
                     className={`flex-shrink-0 w-6 h-6 flex items-center justify-center text-green-mid transition-transform duration-300 ${
@@ -664,7 +578,7 @@ export function CottagePage() {
                   }`}
                 >
                   <p className="font-sans text-sm text-stone-600 leading-relaxed">
-                    {faq.a}
+                    {faqItem.a}
                   </p>
                 </div>
               </motion.div>

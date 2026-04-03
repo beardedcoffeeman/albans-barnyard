@@ -1,20 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import type { SiteSettings } from "@/lib/settingsStore";
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/cox-cottage", label: "Cox Cottage" },
-  { href: "/lambcam", label: "Lambcam" },
-  { href: "/the-farm", label: "The Farm" },
-  { href: "/farm-shop", label: "Farm Shop" },
-  { href: "/contact", label: "Contact" },
-];
+interface NavigationProps {
+  settings: SiteSettings;
+  content?: Record<string, string | string[] | boolean | number>;
+}
 
-export function Navigation() {
+export function Navigation({ settings, content }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -22,6 +19,24 @@ export function Navigation() {
   // Only homepage gets the transparent nav
   const isHomepage = pathname === "/";
   const showTransparent = isHomepage && !scrolled;
+
+  const navLinks = useMemo(() => {
+    const all = [
+      { href: "/", label: String(content?.homeLabel ?? "Home") },
+      { href: "/cox-cottage", label: String(content?.cottageLabel ?? "Cox Cottage") },
+      { href: "/lambcam", label: String(content?.lambcamLabel ?? "Lambcam") },
+      { href: "/the-farm", label: String(content?.farmLabel ?? "The Farm") },
+      { href: "/farm-shop", label: String(content?.shopLabel ?? "Farm Shop") },
+      { href: "/contact", label: String(content?.contactLabel ?? "Contact") },
+    ];
+    return all.filter(
+      (link) => link.href !== "/lambcam" || settings.lambcamMenuVisible
+    );
+  }, [content, settings.lambcamMenuVisible]);
+
+  const logoText = String(content?.logoText ?? "Albans Barnyard");
+  const bookNowText = String(content?.bookNowText ?? "Book Now");
+  const bookNowLink = String(content?.bookNowLink ?? "/cox-cottage#booking");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -52,7 +67,7 @@ export function Navigation() {
                 showTransparent ? "text-white" : "text-green-dark"
               }`}
             >
-              Albans Barnyard
+              {logoText}
             </motion.span>
           </Link>
 
@@ -81,10 +96,10 @@ export function Navigation() {
               </Link>
             ))}
             <Link
-              href="/cox-cottage#booking"
+              href={bookNowLink}
               className="ml-4 px-6 py-2.5 bg-green-dark text-white text-sm font-sans font-medium tracking-widest uppercase hover:bg-green-mid transition-colors duration-300"
             >
-              Book Now
+              {bookNowText}
             </Link>
           </nav>
 
@@ -160,11 +175,11 @@ export function Navigation() {
               transition={{ delay: navLinks.length * 0.08 }}
             >
               <Link
-                href="/cox-cottage#booking"
+                href={bookNowLink}
                 onClick={() => setMobileOpen(false)}
                 className="px-8 py-3 bg-green-dark text-white font-sans text-sm tracking-widest uppercase"
               >
-                Book Now
+                {bookNowText}
               </Link>
             </motion.div>
           </motion.div>

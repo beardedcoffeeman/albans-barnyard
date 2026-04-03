@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FarmPage } from "./FarmPage";
+import { getContent } from "@/lib/contentStore";
 
 export const metadata: Metadata = {
   title: "The Farm",
@@ -7,6 +8,15 @@ export const metadata: Metadata = {
     "Discover a farm stay in Kent at Albans Barnyard. Pedigree Jacob sheep, North Devon Red Ruby cattle, and seasonal lambing experiences in the Weald of Kent.",
 };
 
-export default function TheFarmPage() {
-  return <FarmPage />;
+export default async function TheFarmPage() {
+  const content = await getContent();
+  const section = (id: string) =>
+    content.sections.find((s) => s.id === id)?.fields ?? {};
+
+  return (
+    <FarmPage
+      intro={section("farm-intro")}
+      seasons={section("farm-seasons")}
+    />
+  );
 }

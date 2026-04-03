@@ -1,44 +1,56 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import type { ContentFields } from "@/lib/getSiteData";
 
-const guestBookUrl = "https://www.albansbarnyard.co.uk/wp-content/uploads/2025/05/coxcottageguestbook9.pdf";
+interface GuestBookSectionProps {
+  content: ContentFields;
+  testimonials: ContentFields;
+}
 
-const testimonials = [
-  {
-    quote:
-      "An absolutely beautiful cottage in a stunning setting. Watching the lambs from the garden was magical. We didn't want to leave.",
-    author: "Sarah & James",
-    date: "Spring 2025",
-  },
-  {
-    quote:
-      "The perfect winter retreat. The wood burner, underfloor heating, and gorgeous kitchen made it feel truly special.",
-    author: "The Richardson Family",
-    date: "Winter 2024",
-  },
-  {
-    quote:
-      "We've stayed twice now and it gets better every time. The attention to detail is extraordinary.",
-    author: "Mark & Claire",
-    date: "Summer 2024",
-  },
-  {
-    quote:
-      "A real gem hidden in the Kent countryside. The cottage is immaculate and the farm experience for our children was unforgettable.",
-    author: "The Patels",
-    date: "Easter 2024",
-  },
-];
-
-export function GuestBookSection() {
+export function GuestBookSection({ content, testimonials }: GuestBookSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [active, setActive] = useState(0);
   const [showBook, setShowBook] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const guestBookUrl = String(content.pdfUrl ?? "https://www.albansbarnyard.co.uk/wp-content/uploads/2025/05/coxcottageguestbook9.pdf");
+  const eyebrow = String(content.eyebrow ?? "Guest Book");
+  const title = String(content.title ?? "What Our Guests Say");
+  const subtitle = String(content.subtitle ?? "Real entries from our handwritten guest book at Cox Cottage, complete with drawings, doodles, and heartfelt messages.");
+  const cardTitle = String(content.cardTitle ?? "The Guest Book");
+  const cardSubtitle = String(content.cardSubtitle ?? "9 volumes of handwritten memories");
+  const cardEyebrow = String(content.cardEyebrow ?? "Authentic Reviews");
+  const cardHeading = String(content.cardHeading ?? "Handwritten by Our Guests");
+  const cardDescription = String(content.cardDescription ?? "Every guest leaves their mark in our handwritten guest book, complete with personal stories, drawings, children\u2019s doodles, and heartfelt thank-yous. No online reviews can capture the warmth of these pages.");
+  const browseText = String(content.browseText ?? "Browse the Guest Book");
+  const closeText = String(content.closeText ?? "Close Guest Book");
+
+  const testimonialsList = useMemo(() => [
+    {
+      quote: String(testimonials.testimonial1Quote ?? "An absolutely beautiful cottage in a stunning setting. Watching the lambs from the garden was magical. We didn't want to leave."),
+      author: String(testimonials.testimonial1Author ?? "Sarah & James"),
+      date: String(testimonials.testimonial1Date ?? "Spring 2025"),
+    },
+    {
+      quote: String(testimonials.testimonial2Quote ?? "The perfect winter retreat. The wood burner, underfloor heating, and gorgeous kitchen made it feel truly special."),
+      author: String(testimonials.testimonial2Author ?? "The Richardson Family"),
+      date: String(testimonials.testimonial2Date ?? "Winter 2024"),
+    },
+    {
+      quote: String(testimonials.testimonial3Quote ?? "We've stayed twice now and it gets better every time. The attention to detail is extraordinary."),
+      author: String(testimonials.testimonial3Author ?? "Mark & Claire"),
+      date: String(testimonials.testimonial3Date ?? "Summer 2024"),
+    },
+    {
+      quote: String(testimonials.testimonial4Quote ?? "A real gem hidden in the Kent countryside. The cottage is immaculate and the farm experience for our children was unforgettable."),
+      author: String(testimonials.testimonial4Author ?? "The Patels"),
+      date: String(testimonials.testimonial4Date ?? "Easter 2024"),
+    },
+  ], [testimonials]);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -54,14 +66,13 @@ export function GuestBookSection() {
           className="text-center mb-16"
         >
           <p className="font-sans text-xs tracking-[0.3em] uppercase text-green-mid mb-4">
-            Guest Book
+            {eyebrow}
           </p>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-tight mb-4">
-            What Our Guests Say
+            {title}
           </h2>
           <p className="font-sans text-stone-500 max-w-lg mx-auto">
-            Real entries from our handwritten guest book at Cox Cottage,
-            complete with drawings, doodles, and heartfelt messages.
+            {subtitle}
           </p>
         </motion.div>
 
@@ -77,20 +88,20 @@ export function GuestBookSection() {
           </span>
           <div className="relative z-10 text-center">
             <p className="font-serif text-2xl md:text-3xl text-stone-800 leading-relaxed italic mb-6 max-w-3xl mx-auto">
-              &ldquo;{testimonials[active].quote}&rdquo;
+              &ldquo;{testimonialsList[active].quote}&rdquo;
             </p>
             <p className="font-sans text-sm tracking-wider uppercase text-stone-500">
-              {testimonials[active].author}
+              {testimonialsList[active].author}
             </p>
             <p className="font-sans text-xs text-stone-400 mt-1">
-              {testimonials[active].date}
+              {testimonialsList[active].date}
             </p>
           </div>
         </motion.div>
 
         {/* Dots */}
         <div className="flex justify-center gap-3 mb-12">
-          {testimonials.map((_, i) => (
+          {testimonialsList.map((_, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
@@ -145,10 +156,10 @@ export function GuestBookSection() {
                       </svg>
                     </div>
                     <h3 className="font-serif text-2xl text-white mb-2">
-                      The Guest Book
+                      {cardTitle}
                     </h3>
                     <p className="font-sans text-sm text-white/60">
-                      9 volumes of handwritten memories
+                      {cardSubtitle}
                     </p>
                   </div>
                 </div>
@@ -156,19 +167,16 @@ export function GuestBookSection() {
                 {/* Right - description */}
                 <div className="p-8 md:p-10 flex flex-col justify-center text-left">
                   <p className="font-sans text-xs tracking-[0.2em] uppercase text-green-mid mb-3">
-                    Authentic Reviews
+                    {cardEyebrow}
                   </p>
                   <h3 className="font-serif text-2xl text-stone-900 mb-3">
-                    Handwritten by Our Guests
+                    {cardHeading}
                   </h3>
                   <p className="font-sans text-sm text-stone-500 leading-relaxed mb-6">
-                    Every guest leaves their mark in our handwritten guest book
-                   , complete with personal stories, drawings, children&apos;s
-                    doodles, and heartfelt thank-yous. No online reviews can
-                    capture the warmth of these pages.
+                    {cardDescription}
                   </p>
                   <span className="inline-flex items-center gap-2 font-sans text-sm font-medium text-green-dark group-hover:text-green-mid transition-colors">
-                    {showBook ? "Close Guest Book" : "Browse the Guest Book"}
+                    {showBook ? closeText : browseText}
                     <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>

@@ -7,18 +7,33 @@ import { SeasonalBanner } from "@/components/SeasonalBanner";
 import { ProductsSection } from "@/components/ProductsSection";
 import { GuestBookSection } from "@/components/GuestBookSection";
 import { FacebookSection } from "@/components/FacebookSection";
+import { getContent } from "@/lib/contentStore";
+import { getSettings } from "@/lib/settingsStore";
 
-export default function Home() {
+export default async function Home() {
+  const [content, settings] = await Promise.all([
+    getContent(),
+    getSettings(),
+  ]);
+
+  const section = (id: string) =>
+    content.sections.find((s) => s.id === id)?.fields ?? {};
+
   return (
     <>
-      <Hero />
-      <AboutSection />
-      <CottagePreview />
-      <VideoSection />
-      <LambcamPreview />
-      <SeasonalBanner />
-      <ProductsSection />
-      <GuestBookSection />
+      <Hero content={section("hero")} />
+      <AboutSection content={section("about")} />
+      <CottagePreview content={section("cottage-preview")} />
+      <VideoSection content={section("video")} />
+      {settings.lambcamEnabled && (
+        <LambcamPreview content={section("lambcam")} />
+      )}
+      <SeasonalBanner content={section("seasonal")} settings={settings} />
+      <ProductsSection content={section("products")} />
+      <GuestBookSection
+        content={section("guest-book")}
+        testimonials={section("testimonials")}
+      />
       <FacebookSection />
     </>
   );

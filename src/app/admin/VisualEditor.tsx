@@ -80,6 +80,48 @@ const sectionPreviews: Record<string, (fields: Record<string, string | boolean |
       <p className="text-[9px] text-stone-600 whitespace-pre-line mt-1">{String(f.address)}</p>
     </div>
   ),
+  navigation: (f) => (
+    <div className="bg-white rounded-lg p-3 flex items-center gap-3 text-[9px]">
+      <span className="font-serif text-sm font-semibold text-green-dark">{String(f.logoText)}</span>
+      <div className="flex gap-2 ml-auto">
+        {["homeLabel", "cottageLabel", "lambcamLabel", "farmLabel", "shopLabel", "contactLabel"].map((k) => (
+          <span key={k} className="text-stone-500 uppercase tracking-wider">{String(f[k])}</span>
+        ))}
+      </div>
+    </div>
+  ),
+  footer: (f) => (
+    <div className="bg-green-dark rounded-lg p-4">
+      <p className="text-[9px] text-white/60 mb-2">{String(f.description).slice(0, 80)}...</p>
+      <p className="text-[8px] text-white/40">{String(f.phone)} &middot; {String(f.email)}</p>
+    </div>
+  ),
+  "guest-book": (f) => (
+    <div className="bg-green-dark rounded-lg p-4">
+      <h4 className="font-serif text-base text-white mb-1">{String(f.cardTitle)}</h4>
+      <p className="text-[9px] text-white/60">{String(f.cardSubtitle)}</p>
+      <p className="text-[8px] text-gold mt-2 truncate">{String(f.pdfUrl)}</p>
+    </div>
+  ),
+  "cottage-amenities": (f) => (
+    <div className="bg-white rounded-lg p-4 grid grid-cols-2 gap-2">
+      {["kitchenTitle", "livingTitle", "bedroomsTitle", "outdoorTitle"].map((k) => (
+        <div key={k}>
+          <span className="text-[8px] uppercase tracking-wider text-green-mid">{String(f[k])}</span>
+        </div>
+      ))}
+    </div>
+  ),
+  "cottage-sustainability": (f) => (
+    <div className="bg-green-dark rounded-lg p-4 grid grid-cols-3 gap-2 text-center">
+      {[1, 2, 3].map((n) => (
+        <div key={n}>
+          <p className="text-[9px] text-white font-medium">{String(f[`feature${n}Title`])}</p>
+          <p className="text-[8px] text-white/50">{String(f[`feature${n}Text`]).slice(0, 30)}...</p>
+        </div>
+      ))}
+    </div>
+  ),
 };
 
 const fieldLabels: Record<string, string> = {
@@ -114,6 +156,82 @@ const fieldLabels: Record<string, string> = {
   phone: "Phone Number",
   email: "Email Address",
   address: "Address",
+  // Navigation
+  logoText: "Logo Text",
+  homeLabel: "Home Link Text",
+  cottageLabel: "Cottage Link Text",
+  lambcamLabel: "Lambcam Link Text",
+  farmLabel: "Farm Link Text",
+  shopLabel: "Shop Link Text",
+  contactLabel: "Contact Link Text",
+  bookNowText: "Book Now Button Text",
+  bookNowLink: "Book Now Button Link",
+  // Footer
+  stayColumnTitle: "Stay Column Title",
+  exploreColumnTitle: "Explore Column Title",
+  connectColumnTitle: "Connect Column Title",
+  bookLabel: "Book Link Text",
+  amenitiesLabel: "Amenities Link Text",
+  faqLabel: "FAQ Link Text",
+  facebookLabel: "Facebook Link Text",
+  instagramLabel: "Instagram Link Text",
+  copyright: "Copyright Text",
+  // Guest Book
+  pdfUrl: "Guest Book PDF URL",
+  cardTitle: "Card Title",
+  cardSubtitle: "Card Subtitle",
+  cardEyebrow: "Card Eyebrow",
+  cardHeading: "Card Heading",
+  cardDescription: "Card Description",
+  browseText: "Browse Button Text",
+  closeText: "Close Button Text",
+  // Amenities
+  kitchenTitle: "Kitchen Category Title",
+  kitchenItems: "Kitchen Items (pipe-separated)",
+  livingTitle: "Living Category Title",
+  livingItems: "Living Items (pipe-separated)",
+  bedroomsTitle: "Bedrooms Category Title",
+  bedroomsItems: "Bedroom Items (pipe-separated)",
+  outdoorTitle: "Outdoor Category Title",
+  outdoorItems: "Outdoor Items (pipe-separated)",
+  // Sustainability
+  feature1Title: "Feature 1 Title",
+  feature1Text: "Feature 1 Description",
+  feature2Title: "Feature 2 Title",
+  feature2Text: "Feature 2 Description",
+  feature3Title: "Feature 3 Title",
+  feature3Text: "Feature 3 Description",
+  // Shop
+  intro: "Introduction Text",
+  sheepskinSinglePrice: "Single Sheepskin Price",
+  sheepskinSingleDescription: "Single Sheepskin Description",
+  sheepskinDoublePrice: "Double Sheepskin Price",
+  sheepskinDoubleDescription: "Double Sheepskin Description",
+  honeyPrice: "Honey Price",
+  honeyDescription: "Honey Description",
+  meatBoxPrice: "Meat Box Price",
+  meatBoxDescription: "Meat Box Description",
+  // Seasons
+  springDescription: "Spring Description",
+  summerDescription: "Summer Description",
+  autumnDescription: "Autumn Description",
+  winterDescription: "Winter Description",
+  // Contact
+  findingUs: "Finding Us",
+  directions: "Directions",
+  // Testimonials
+  testimonial1Quote: "Testimonial 1 Quote",
+  testimonial1Author: "Testimonial 1 Author",
+  testimonial1Date: "Testimonial 1 Date",
+  testimonial2Quote: "Testimonial 2 Quote",
+  testimonial2Author: "Testimonial 2 Author",
+  testimonial2Date: "Testimonial 2 Date",
+  testimonial3Quote: "Testimonial 3 Quote",
+  testimonial3Author: "Testimonial 3 Author",
+  testimonial3Date: "Testimonial 3 Date",
+  testimonial4Quote: "Testimonial 4 Quote",
+  testimonial4Author: "Testimonial 4 Author",
+  testimonial4Date: "Testimonial 4 Date",
 };
 
 export function VisualEditor({ token }: { token: string }) {

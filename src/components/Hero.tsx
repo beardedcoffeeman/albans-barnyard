@@ -2,8 +2,24 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import type { ContentFields } from "@/lib/getSiteData";
 
-export function Hero() {
+interface HeroProps {
+  content: ContentFields;
+}
+
+export function Hero({ content }: HeroProps) {
+  const image = String(content.image ?? "/images/farm/hero-banner.jpg");
+  const fallbackImage = String(content.fallbackImage ?? "/images/farm/farm-view-1.jpg");
+  const eyebrow = String(content.eyebrow ?? "The Weald of Kent");
+  const title = String(content.title ?? "A Home");
+  const titleLine2 = String(content.titleLine2 ?? "from Home");
+  const subtitle = String(content.subtitle ?? "A luxury farm stay in Kent, nestled in rolling countryside five miles from Tunbridge Wells.");
+  const cta1Text = String(content.cta1Text ?? "Explore the Cottage");
+  const cta1Link = String(content.cta1Link ?? "/cox-cottage");
+  const cta2Text = String(content.cta2Text ?? "Check Availability");
+  const cta2Link = String(content.cta2Link ?? "/cox-cottage#booking");
+
   return (
     <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Ken Burns effect */}
@@ -11,7 +27,7 @@ export function Hero() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url(/images/farm/hero-banner.jpg), url(/images/farm/farm-view-1.jpg)",
+            backgroundImage: `url(${image}), url(${fallbackImage})`,
           }}
         />
       </div>
@@ -25,7 +41,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="font-sans text-xs tracking-[0.3em] uppercase text-white/80 mb-6"
         >
-          The Weald of Kent
+          {eyebrow}
         </motion.p>
 
         <motion.h1
@@ -34,9 +50,9 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.5 }}
           className="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-white leading-[0.95] mb-8"
         >
-          A Home
+          {title}
           <br />
-          <span className="italic">from Home</span>
+          <span className="italic">{titleLine2}</span>
         </motion.h1>
 
         <motion.p
@@ -45,8 +61,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="font-sans text-base md:text-lg text-white/80 max-w-xl mx-auto mb-10 leading-relaxed"
         >
-          A luxury farm stay in Kent, nestled in rolling countryside
-          five miles from Tunbridge Wells.
+          {subtitle}
         </motion.p>
 
         <motion.div
@@ -56,16 +71,16 @@ export function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link
-            href="/cox-cottage"
+            href={cta1Link}
             className="group px-10 py-4 bg-white text-green-dark font-sans text-sm tracking-[0.2em] uppercase transition-all duration-300 hover:bg-cream hover:shadow-lg hover:translate-y-[-1px]"
           >
-            Explore the Cottage
+            {cta1Text}
           </Link>
           <Link
-            href="/cox-cottage#booking"
+            href={cta2Link}
             className="px-10 py-4 border border-white/60 text-white font-sans text-sm tracking-[0.2em] uppercase hover:bg-white/10 transition-all duration-300 hover:border-white"
           >
-            Check Availability
+            {cta2Text}
           </Link>
         </motion.div>
       </div>

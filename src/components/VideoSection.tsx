@@ -2,10 +2,21 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import type { ContentFields } from "@/lib/getSiteData";
 
-export function VideoSection() {
+interface VideoSectionProps {
+  content: ContentFields;
+}
+
+export function VideoSection({ content }: VideoSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const eyebrow = String(content.eyebrow ?? "Watch");
+  const title = String(content.title ?? "Lambs at");
+  const titleLine2 = String(content.titleLine2 ?? "Play");
+  const description = String(content.description ?? "Our Jacob lambs enjoying spring sunshine on the farm. There\u2019s nothing quite like watching them chase each other across the fields, and guests at Cox Cottage can see it first-hand.");
+  const videoUrl = String(content.videoUrl ?? "https://player.vimeo.com/video/315014239?h=aff6d9dfa6&title=0&byline=0&portrait=0");
 
   return (
     <section ref={ref} className="py-0 overflow-hidden">
@@ -20,17 +31,15 @@ export function VideoSection() {
               className="lg:col-span-2 px-8 py-16 md:py-20 lg:py-24"
             >
               <p className="font-sans text-xs tracking-[0.3em] uppercase text-gold mb-4">
-                Watch
+                {eyebrow}
               </p>
               <h2 className="font-serif text-3xl md:text-4xl font-light text-white leading-tight mb-4">
-                Lambs at
+                {title}
                 <br />
-                <span className="italic">Play</span>
+                <span className="italic">{titleLine2}</span>
               </h2>
               <p className="font-sans text-sm text-white/60 leading-relaxed">
-                Our Jacob lambs enjoying spring sunshine on the farm. There&apos;s
-                nothing quite like watching them chase each other across the
-                fields, and guests at Cox Cottage can see it first-hand.
+                {description}
               </p>
             </motion.div>
 
@@ -43,7 +52,7 @@ export function VideoSection() {
             >
               <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
                 <iframe
-                  src="https://player.vimeo.com/video/315014239?h=aff6d9dfa6&title=0&byline=0&portrait=0"
+                  src={videoUrl}
                   className="absolute inset-0 w-full h-full"
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen

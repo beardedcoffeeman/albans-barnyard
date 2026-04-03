@@ -3,17 +3,25 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Link from "next/link";
+import type { ContentFields } from "@/lib/getSiteData";
 
-const cameras = [
-  { id: 1, alias: "620d2145dc98f", label: "Barn View" },
-  { id: 2, alias: "64135a44aacd3", label: "Pen View" },
-];
+interface LambcamPreviewProps {
+  content: ContentFields;
+}
 
-export function LambcamPreview() {
+export function LambcamPreview({ content }: LambcamPreviewProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeCamera, setActiveCamera] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const title = String(content.title ?? "Lambcam");
+  const description = String(content.description ?? "Watch our flock in real-time. During lambing season, you can witness the arrival of new lambs from the comfort of your screen, a true lambing experience from wherever you are. Our Jacob sheep have been a beloved feature of the farm for generations.");
+
+  const cameras = [
+    { id: 1, alias: String(content.camera1Alias ?? "620d2145dc98f"), label: String(content.camera1Label ?? "Barn View") },
+    { id: 2, alias: String(content.camera2Alias ?? "64135a44aacd3"), label: String(content.camera2Label ?? "Pen View") },
+  ];
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-green-dark overflow-hidden">
@@ -38,14 +46,10 @@ export function LambcamPreview() {
               </div>
 
               <h2 className="font-serif text-4xl md:text-5xl font-light text-white leading-tight mb-6">
-                Lambcam
+                {title}
               </h2>
               <p className="font-sans text-base text-white/70 leading-relaxed mb-8">
-                Watch our flock in real-time. During lambing season, you can
-                witness the arrival of new lambs from the comfort of your screen
-               , a true lambing experience from wherever you are.
-                Our Jacob sheep have been a beloved feature of the farm for
-                generations.
+                {description}
               </p>
 
               {/* Camera Switcher */}

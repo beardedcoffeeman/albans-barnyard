@@ -4,13 +4,11 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ContentFields } from "@/lib/getSiteData";
 
-const features = [
-  { icon: "bed", label: "2 Bedrooms", detail: "King & double with ensuites" },
-  { icon: "users", label: "Sleeps 4", detail: "Couples & families welcome" },
-  { icon: "flame", label: "Wood Stove", detail: "Cosy Charnwood burner" },
-  { icon: "leaf", label: "Eco-Friendly", detail: "Ground source heat pump & solar" },
-];
+interface CottagePreviewProps {
+  content: ContentFields;
+}
 
 const galleryImages = [
   { src: "/images/cottage/cottages-10.jpg", alt: "Cox Cottage master bedroom" },
@@ -45,9 +43,20 @@ function FeatureIcon({ icon }: { icon: string }) {
   return <>{icons[icon]}</>;
 }
 
-export function CottagePreview() {
+export function CottagePreview({ content }: CottagePreviewProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const eyebrow = String(content.eyebrow ?? "The Accommodation");
+  const title = String(content.title ?? "Cox Cottage");
+  const ctaText = String(content.ctaText ?? "View Full Details");
+
+  const features = [
+    { icon: "bed", label: String(content.feature1Label ?? "2 Bedrooms"), detail: String(content.feature1Detail ?? "King & double with ensuites") },
+    { icon: "users", label: String(content.feature2Label ?? "Sleeps 4"), detail: String(content.feature2Detail ?? "Couples & families welcome") },
+    { icon: "flame", label: String(content.feature3Label ?? "Wood Stove"), detail: String(content.feature3Detail ?? "Cosy Charnwood burner") },
+    { icon: "leaf", label: String(content.feature4Label ?? "Eco-Friendly"), detail: String(content.feature4Detail ?? "Ground source heat pump & solar") },
+  ];
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-cream">
@@ -58,7 +67,7 @@ export function CottagePreview() {
           transition={{ duration: 0.6 }}
           className="font-sans text-xs tracking-[0.3em] uppercase text-green-mid mb-4 text-center"
         >
-          The Accommodation
+          {eyebrow}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -66,7 +75,7 @@ export function CottagePreview() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-tight text-center mb-16"
         >
-          Cox Cottage
+          {title}
         </motion.h2>
 
         {/* Image Grid */}
@@ -123,7 +132,7 @@ export function CottagePreview() {
             href="/cox-cottage"
             className="inline-block px-10 py-4 bg-green-dark text-white font-sans text-sm tracking-[0.2em] uppercase hover:bg-green-mid transition-colors duration-300"
           >
-            View Full Details
+            {ctaText}
           </Link>
         </motion.div>
       </div>

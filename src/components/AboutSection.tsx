@@ -4,10 +4,26 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ContentFields } from "@/lib/getSiteData";
 
-export function AboutSection() {
+interface AboutSectionProps {
+  content: ContentFields;
+}
+
+export function AboutSection({ content }: AboutSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const eyebrow = String(content.eyebrow ?? "Our Story");
+  const title = String(content.title ?? "Where Countryside");
+  const titleLine2 = String(content.titleLine2 ?? "Meets Comfort");
+  const paragraph1 = String(content.paragraph1 ?? "Set in the heart of the Kentish Weald, Albans Barnyard is a small working farm raising pedigree Jacob sheep and North Devon Red Ruby cattle among rolling orchards and ancient woodland. For those seeking luxury farm stays in the UK, this is a place where the land shapes everything.");
+  const paragraph2 = String(content.paragraph2 ?? "Cox Cottage has been lovingly designed with sustainability at its heart, powered by ground source heat pump, solar panels, and heat recovery ventilation, without compromising on comfort. Dijon limestone floors, a hand-built kitchen, and a wood burning stove create the perfect self catering cottage in Kent.");
+  const paragraph3 = String(content.paragraph3 ?? "Whether you\u2019re watching lambs in spring, tasting our own honey in summer, or curling up by the fire in winter, every season brings something special.");
+  const mainImage = String(content.mainImage ?? "/images/farm/sunset-tractor.jpg");
+  const smallImage = String(content.smallImage ?? "/images/cottage/interior-11.jpg");
+  const ctaText = String(content.ctaText ?? "Discover the Farm");
+  const ctaLink = String(content.ctaLink ?? "/the-farm");
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-white">
@@ -22,7 +38,7 @@ export function AboutSection() {
               className="relative aspect-[4/5] overflow-hidden"
             >
               <Image
-                src="/images/farm/sunset-tractor.jpg"
+                src={mainImage}
                 alt="Tractor baling hay at golden hour on the farm"
                 fill
                 className="object-cover"
@@ -36,7 +52,7 @@ export function AboutSection() {
               className="absolute -bottom-8 -right-8 w-48 h-48 md:w-64 md:h-64 overflow-hidden border-4 border-white shadow-xl hidden md:block"
             >
               <Image
-                src="/images/cottage/interior-11.jpg"
+                src={smallImage}
                 alt="Cox Cottage upper bedroom"
                 fill
                 className="object-cover"
@@ -53,7 +69,7 @@ export function AboutSection() {
               transition={{ duration: 0.6 }}
               className="font-sans text-xs tracking-[0.3em] uppercase text-green-mid mb-4"
             >
-              Our Story
+              {eyebrow}
             </motion.p>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -61,9 +77,9 @@ export function AboutSection() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="font-serif text-4xl md:text-5xl font-light text-stone-900 leading-tight mb-8"
             >
-              Where Countryside
+              {title}
               <br />
-              <span className="italic">Meets Comfort</span>
+              <span className="italic">{titleLine2}</span>
             </motion.h2>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -71,25 +87,9 @@ export function AboutSection() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-5 font-sans text-stone-600 leading-relaxed"
             >
-              <p>
-                Set in the heart of the Kentish Weald, Albans Barnyard is
-                a small working farm raising pedigree Jacob sheep and North Devon
-                Red Ruby cattle among rolling orchards and ancient woodland. For
-                those seeking luxury farm stays in the UK, this is a place where
-                the land shapes everything.
-              </p>
-              <p>
-                Cox Cottage has been lovingly designed with sustainability at its
-                heart, powered by ground source heat pump, solar panels,
-                and heat recovery ventilation, without compromising on
-                comfort. Dijon limestone floors, a hand-built kitchen, and a wood
-                burning stove create the perfect self catering cottage in Kent.
-              </p>
-              <p>
-                Whether you&apos;re watching lambs in spring, tasting our own
-                honey in summer, or curling up by the fire in winter, every
-                season brings something special.
-              </p>
+              <p>{paragraph1}</p>
+              <p>{paragraph2}</p>
+              <p>{paragraph3}</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -98,10 +98,10 @@ export function AboutSection() {
               className="mt-10"
             >
               <Link
-                href="/the-farm"
+                href={ctaLink}
                 className="inline-block px-8 py-3.5 bg-green-dark text-white font-sans text-sm tracking-[0.2em] uppercase hover:bg-green-mid transition-colors duration-300"
               >
-                Discover the Farm
+                {ctaText}
               </Link>
             </motion.div>
           </div>

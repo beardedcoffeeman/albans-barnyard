@@ -4,34 +4,39 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ContentFields } from "@/lib/getSiteData";
 
-const products = [
-  {
-    title: "Pure Honey",
-    description:
-      "Raw, unblended honey from our own hives, harvested each summer from the wildflowers and orchards of the farm.",
-    image: "/images/products/bees.jpg",
-    href: "/farm-shop",
-  },
-  {
-    title: "Sheepskins",
-    description:
-      "Luxurious Jacob sheepskin rugs, tanned at the oldest tannery in the country using traditional methods.",
-    image: "/images/products/sheepskin-1.jpg",
-    href: "/farm-shop",
-  },
-  {
-    title: "Meat Boxes",
-    description:
-      "Seasonal boxes of rare breed pork and lamb, raised slowly on natural pasture right here on the farm.",
-    image: "/images/products/meat-box.jpg",
-    href: "/farm-shop",
-  },
-];
+interface ProductsSectionProps {
+  content: ContentFields;
+}
 
-export function ProductsSection() {
+export function ProductsSection({ content }: ProductsSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const eyebrow = String(content.eyebrow ?? "From the Farm");
+  const title = String(content.title ?? "Farm Shop");
+
+  const products = [
+    {
+      title: String(content.product1Title ?? "Pure Honey"),
+      description: String(content.product1Description ?? "Raw, unblended honey from our own hives, harvested each summer from the wildflowers and orchards of the farm."),
+      image: "/images/products/bees.jpg",
+      href: "/farm-shop",
+    },
+    {
+      title: String(content.product2Title ?? "Sheepskins"),
+      description: String(content.product2Description ?? "Luxurious Jacob sheepskin rugs, tanned at the oldest tannery in the country using traditional methods."),
+      image: "/images/products/sheepskin-1.jpg",
+      href: "/farm-shop",
+    },
+    {
+      title: String(content.product3Title ?? "Meat Boxes"),
+      description: String(content.product3Description ?? "Seasonal boxes of rare breed pork and lamb, raised slowly on natural pasture right here on the farm."),
+      image: "/images/products/meat-box.jpg",
+      href: "/farm-shop",
+    },
+  ];
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-cream">
@@ -42,7 +47,7 @@ export function ProductsSection() {
           transition={{ duration: 0.6 }}
           className="font-sans text-xs tracking-[0.3em] uppercase text-green-mid mb-4 text-center"
         >
-          From the Farm
+          {eyebrow}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -50,7 +55,7 @@ export function ProductsSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-tight text-center mb-16"
         >
-          Farm Shop
+          {title}
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   // Scan uploads
   if (existsSync(UPLOADS_DIR)) {
     readdirSync(UPLOADS_DIR)
-      .filter((f) => /\.(jpg|jpeg|png|webp|mp4|mov|gif)$/i.test(f))
+      .filter((f) => /\.(jpg|jpeg|png|webp|mp4|mov|gif|pdf)$/i.test(f))
       .forEach((f) => {
         const stat = statSync(join(UPLOADS_DIR, f));
         allFiles.push({ name: f, url: `/uploads/${f}`, size: stat.size, category: "Uploads" });
