@@ -48,6 +48,9 @@ export function AdminDashboard({ token }: { token: string }) {
   const [media, setMedia] = useState<MediaFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
+  const [availability, setAvailability] = useState<{ date: string; pricePerNight?: number }[]>([]);
+  const [availCalMonth, setAvailCalMonth] = useState(new Date());
+  const [availPrice, setAvailPrice] = useState("150");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -78,11 +81,19 @@ export function AdminDashboard({ token }: { token: string }) {
     } catch { /* no-op */ }
   }, []);
 
+  const fetchAvailability = useCallback(async () => {
+    try {
+      const res = await fetch("/api/availability");
+      if (res.ok) setAvailability(await res.json());
+    } catch { /* no-op */ }
+  }, []);
+
   useEffect(() => {
     fetchData();
     fetchMedia();
     fetchAnalytics();
-  }, [fetchData, fetchMedia, fetchAnalytics]);
+    fetchAvailability();
+  }, [fetchData, fetchMedia, fetchAnalytics, fetchAvailability]);
 
   // Upload
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,6 +117,24 @@ export function AdminDashboard({ token }: { token: string }) {
       body: JSON.stringify({ id, status }),
     });
     fetchData();
+  };
+
+  const toggleAvailDate = async (dateStr: string) => {
+    const isAvail = availability.some((d) => d.date === dateStr);
+    if (isAvail) {
+      await fetch("/api/availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeaders },
+        body: JSON.stringify({ dates: [dateStr], action: "remove" }),
+      });
+    } else {
+      await fetch("/api/availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeaders },
+        body: JSON.stringify({ dates: [{ date: dateStr, pricePerNight: Number(availPrice) || 150 }] }),
+      });
+    }
+    fetchAvailability();
   };
 
   const pendingCount = bookings.filter((b) => b.status === "pending").length;
@@ -317,7 +346,106 @@ export function AdminDashboard({ token }: { token: string }) {
 
       {/* ===== BOOKINGS ===== */}
       {tab === "bookings" && (
-        <div className="space-y-4">
+        <div className="space-y-6">
+          {/* Availability Calendar */}
+          <div className="bg-white rounded-2xl shadow-sm border border-stone-200/60 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-serif text-lg text-stone-900">Manage Availability</h3>
+              <div className="flex items-center gap-3">
+                <label className="font-sans text-xs text-stone-500">Price per night:</label>
+                <div className="flex items-center gap-1">
+                  <span className="font-sans text-sm text-stone-400">&pound;</span>
+                  <input
+                    type="number"
+                    value={availPrice}
+                    onChange={(e) => setAvailPrice(e.target.value)}
+                    className="w-20 px-3 py-1.5 border border-stone-200 rounded-lg font-sans text-sm focus:outline-none focus:border-green-mid"
+                  />
+                </div>
+              </div>
+            </div>
+            <p className="font-sans text-xs text-stone-400 mb-4">Click dates to toggle availability. Green dates are available for booking on the website.</p>
+
+            {/* Month nav */}
+            <div className="flex items-center justify-between mb-3">
+              <button
+                onClick={() => setAvailCalMonth(new Date(availCalMonth.getFullYear(), availCalMonth.getMonth() - 1, 1))}
+                className="p-1.5 text-stone-400 hover:text-stone-700 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              </button>
+              <h4 className="font-serif text-base text-stone-900">
+                {availCalMonth.toLocaleDateString("en-GB", { month: "long", year: "numeric" })}
+              </h4>
+              <button
+                onClick={() => setAvailCalMonth(new Date(availCalMonth.getFullYear(), availCalMonth.getMonth() + 1, 1))}
+                className="p-1.5 text-stone-400 hover:text-stone-700 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+              </button>
+            </div>
+
+            {/* Day headers */}
+            <div className="grid grid-cols-7 gap-1 mb-1">
+              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
+                <div key={d} className="text-center text-xs font-sans text-stone-400 py-1">{d}</div>
+              ))}
+            </div>
+
+            {/* Calendar grid */}
+            <div className="grid grid-cols-7 gap-1">
+              {Array.from({
+                length: (new Date(availCalMonth.getFullYear(), availCalMonth.getMonth(), 1).getDay() + 6) % 7,
+              }).map((_, i) => (
+                <div key={`e-${i}`} className="aspect-square" />
+              ))}
+              {Array.from({
+                length: new Date(availCalMonth.getFullYear(), availCalMonth.getMonth() + 1, 0).getDate(),
+              }).map((_, i) => {
+                const day = i + 1;
+                const dateStr = `${availCalMonth.getFullYear()}-${String(availCalMonth.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                const isPast = dateStr < new Date().toISOString().split("T")[0];
+                const availEntry = availability.find((d) => d.date === dateStr);
+                const isAvail = !!availEntry;
+
+                return (
+                  <button
+                    key={dateStr}
+                    disabled={isPast}
+                    onClick={() => toggleAvailDate(dateStr)}
+                    className={`aspect-square rounded-lg flex flex-col items-center justify-center text-sm font-sans transition-all ${
+                      isPast
+                        ? "text-stone-200 cursor-not-allowed"
+                        : isAvail
+                          ? "bg-green-dark text-white hover:bg-green-mid"
+                          : "bg-stone-50 text-stone-600 hover:bg-stone-100"
+                    }`}
+                  >
+                    <span>{day}</span>
+                    {isAvail && !isPast && (
+                      <span className="text-[9px] opacity-75">&pound;{availEntry?.pricePerNight || 150}</span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Legend */}
+            <div className="flex gap-4 mt-4 pt-3 border-t border-stone-100">
+              <div className="flex items-center gap-2 text-xs font-sans text-stone-500">
+                <span className="w-3 h-3 rounded bg-green-dark" />
+                Available
+              </div>
+              <div className="flex items-center gap-2 text-xs font-sans text-stone-500">
+                <span className="w-3 h-3 rounded bg-stone-50 border border-stone-200" />
+                Unavailable
+              </div>
+              <span className="ml-auto text-xs font-sans text-stone-400">{availability.length} dates available</span>
+            </div>
+          </div>
+
+          {/* Booking Requests */}
+          <h3 className="font-serif text-lg text-stone-900">Booking Requests</h3>
           {bookings.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-sm border border-stone-200/60 p-16 text-center">
               <p className="font-sans text-stone-400">No booking requests yet</p>
